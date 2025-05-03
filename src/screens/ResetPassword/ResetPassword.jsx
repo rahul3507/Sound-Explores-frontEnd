@@ -111,7 +111,7 @@ export const ResetPassword = () => {
             />
           </div>
 
-          <div className="flex-col items-start gap-8 self-stretch w-full flex-[0_0_auto] flex relative">
+          <div className="flex-col justify-between items-start gap-2 self-stretch w-full flex-[0_0_auto] ">
             <p className="text-left w-full font-base-medium text-[#0b0b0b] text-xl mb-6">
               Create Your New password
             </p>
@@ -179,16 +179,16 @@ export const ResetPassword = () => {
             </div>
           </div>
 
-          <div className="absolute bottom-8 left-0 right-0 px-5">
+          
             <Button 
               type="submit"
-              className="flex items-center justify-center gap-2.5 px-8 py-4 self-stretch w-full bg-[#00ae34] rounded-[100px] shadow-shadow-01 h-auto hover:bg-[#009c2e]"
+              className="flex items-center  justify-center gap-2.5 px-8 py-2 self-stretch w-full bg-[#00ae34] rounded-[100px] shadow-shadow-01 h-auto hover:bg-[#009c2e]"
             >
               <span className="flex-1 [font-family:'Roboto',Helvetica] font-medium text-white text-base text-center tracking-[0] leading-6">
                 Continue
               </span>
             </Button>
-          </div>
+          
         </form>
       </div>
     </div>
