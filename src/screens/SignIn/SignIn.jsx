@@ -4,10 +4,10 @@ import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Input } from "../../components/ui/input";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const SignIn = () => {
-  const navigate = useNavigate();
+  
   
   // State for form inputs
   const [formData, setFormData] = useState({
@@ -185,13 +185,13 @@ export const SignIn = () => {
                     </label>
                   </div>
 
-                  <button 
+                  <Link 
                     type="button"
-                    onClick={handleForgetPassword}
+                    to='/forget-password'
                     className="relative w-fit mt-[-1.00px] font-base-small-medium font-[number:var(--base-small-medium-font-weight)] text-[#00ae34] text-[length:var(--base-small-medium-font-size)] text-right tracking-[var(--base-small-medium-letter-spacing)] leading-[var(--base-small-medium-line-height)] whitespace-nowrap [font-style:var(--base-small-medium-font-style)]"
                   >
                     Forget Password?
-                  </button>
+                  </Link>
                 </div>
               </div>
 
@@ -210,13 +210,14 @@ export const SignIn = () => {
                 Don't have any account?
               </p>
 
-              <button 
+              <Link 
                 type="button"
-                onClick={() => navigate("/signup")} 
+                to='/signup'
+                
                 className="relative w-fit mt-[-1.00px] font-base-small-medium font-[number:var(--base-small-medium-font-weight)] text-[#00ae34] text-[length:var(--base-small-medium-font-size)] tracking-[var(--base-small-medium-letter-spacing)] leading-[var(--base-small-medium-line-height)] whitespace-nowrap [font-style:var(--base-small-medium-font-style)]"
               >
                 Sign Up
-              </button>
+              </Link>
             </div>
           </div>
         </form>

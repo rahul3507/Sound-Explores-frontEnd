@@ -4,7 +4,7 @@ import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Input } from "../../components/ui/input";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -249,13 +249,13 @@ export const SignUp = () => {
                 <p className="w-fit font-base-small-regular font-[number:var(--base-small-regular-font-weight)] text-[#707070] text-[length:var(--base-small-regular-font-size)] text-right tracking-[var(--base-small-regular-letter-spacing)] leading-[var(--base-small-regular-line-height)] whitespace-nowrap [font-style:var(--base-small-regular-font-style)]">
                   Already have an account?
                 </p>
-                <button
+                <Link
                   type="button"
-                  onClick={() => navigate("/signin")}
+                  to='/'
                   className="relative w-fit mt-[-1.00px] font-base-small-medium font-[number:var(--base-small-medium-font-weight)] text-[#00ae34] text-[length:var(--base-small-medium-font-size)] tracking-[var(--base-small-medium-letter-spacing)] leading-[var(--base-small-medium-line-height)] whitespace-nowrap [font-style:var(--base-small-medium-font-style)]"
                 >
                   Sign In
-                </button>
+                </Link>
               </div>
             </div>
           </form>
