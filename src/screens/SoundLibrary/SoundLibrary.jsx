@@ -1,11 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Search, Menu, User } from "lucide-react";
-import { Button } from "../../components/ui/button";
-import { Checkbox } from "../../components/ui/checkbox";
-import { Input } from "../../components/ui/input";
-import { Link } from "react-router-dom";
+import { Menu, User } from "lucide-react";
 import SoundList from "./SoundList/SoundList";
 import SideBar from "./SideBar";
+import { Link } from "react-router-dom";
 
 const SoundLibrary = () => {
   // State for sidebar visibility
@@ -34,11 +31,7 @@ const SoundLibrary = () => {
     }
   };
   
-  // Handle logout
-  const handleLogout = () => {
-    console.log("Logging out");
-    // Implement logout functionality
-  };
+
 
   // Add event listener for clicks
   useEffect(() => {
@@ -49,7 +42,7 @@ const SoundLibrary = () => {
   }, [sidebarOpen]);
 
   return (
-    <div className="bg-white flex h-screen w-full overflow-hidden">
+    <div className="bg-white flex justify-center h-screen w-full overflow-hidden">
       {/* Sidebar */}
       <div 
         ref={sidebarRef}
@@ -58,37 +51,7 @@ const SoundLibrary = () => {
         }`}
       >
         <SideBar/>
-        {/* <div className="flex w-full flex-col h-full">
-          <div className="p-5 border-b border-gray-800">
-            <h1 className="text-xl font-bold">App Name</h1>
-          </div>
-          
-          <nav className="flex-1 w-full p-4">
-            <ul className="space-y-4 ">
-              <li>
-                <Link
-                  to='/sound-library' 
-                  className="w-full text-left px-4 py-3 rounded-md hover:bg-gray-800 transition-colors">
-                  Sound
-                </Link>
-              </li>
-              <li>
-                <button className="w-full text-left px-4 py-3 rounded-md hover:bg-gray-800 transition-colors">
-                  Friend
-                </button>
-              </li>
-            </ul>
-          </nav>
-          
-          <div className="p-4 mt-auto">
-            <button 
-              onClick={handleLogout}
-              className="w-full text-left px-4 py-3 hover:bg-gray-800 transition-colors"
-            >
-              Log Out
-            </button>
-          </div>
-        </div> */}
+
       </div>
 
       {/* Main Content */}
@@ -103,9 +66,11 @@ const SoundLibrary = () => {
               <Menu className="w-6 h-6 text-black" />
             </button>
             <h1 className="text-xl font-medium text-center">Sound Library</h1>
-            <button className="p-2">
+            <Link
+              to= "/profile"
+             className="p-2">
               <User className="w-6 h-6 text-black" />
-            </button>
+            </Link>
           </div>
 
           <SoundList/>
