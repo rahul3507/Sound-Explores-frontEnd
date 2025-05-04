@@ -9,6 +9,7 @@ import { ResetPassword } from "./screens/ResetPassword/ResetPassword";
 import SoundLibrary from "./screens/SoundLibrary/SoundLibrary";
 import Profile from "./screens/Profile/Profile";
 import EditProfile from "./screens/Profile/EditProfile/EditProfile";
+import { PrivacyPolicy } from "./screens/Profile/PrivacyPolicy/PrivacyPolicy";
 
 createRoot(document.getElementById("app")).render(
   <StrictMode>
@@ -23,6 +24,7 @@ createRoot(document.getElementById("app")).render(
         <Route path="/sound-library" element={<SoundLibrary/>}/>
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/edit-profile" element={<EditProfile/>} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
       </Routes>
     </BrowserRouter>
     

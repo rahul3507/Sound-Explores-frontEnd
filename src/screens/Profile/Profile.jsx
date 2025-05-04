@@ -83,19 +83,12 @@ const Profile = () => {
           <ChevronRight className="w-6 h-6 text-gray-400" />
         </div>
 
-        {/* Payment */}
-        <div className="flex items-center justify-between py-2 border-b">
-          <div className="flex items-center">
-            <div className="p-2 mr-4">
-              <CreditCard className="w-6 h-6" />
-            </div>
-            <span className="text-lg font-medium">Payment</span>
-          </div>
-          <ChevronRight className="w-6 h-6 text-gray-400" />
-        </div>
+        
 
         {/* Privacy Policy */}
-        <div className="flex items-center justify-between py-2 border-b">
+        <Link
+            to="/privacy-policy"
+            className="flex items-center justify-between py-2 border-b">
           <div className="flex items-center">
             <div className="p-2 mr-4">
               <Lock className="w-6 h-6" />
@@ -103,7 +96,7 @@ const Profile = () => {
             <span className="text-lg font-medium">Privacy Policy</span>
           </div>
           <ChevronRight className="w-6 h-6 text-gray-400" />
-        </div>
+        </Link>
 
         {/* Logout */}
         <div 
