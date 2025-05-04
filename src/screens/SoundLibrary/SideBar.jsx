@@ -3,6 +3,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const SideBar = () => {
+
+    // Handle logout
+  const handleLogout = () => {
+    console.log("Logging out");
+    // Implement logout functionality
+  };
+
   return (
     <div className="flex w-full flex-col h-full">
               <div className="p-5 border-b border-gray-800">

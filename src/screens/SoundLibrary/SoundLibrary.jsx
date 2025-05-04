@@ -5,6 +5,7 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { Input } from "../../components/ui/input";
 import { Link } from "react-router-dom";
 import SoundList from "./SoundList/SoundList";
+import SideBar from "./SideBar";
 
 const SoundLibrary = () => {
   // State for sidebar visibility
@@ -56,7 +57,8 @@ const SoundLibrary = () => {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex w-full flex-col h-full">
+        <SideBar/>
+        {/* <div className="flex w-full flex-col h-full">
           <div className="p-5 border-b border-gray-800">
             <h1 className="text-xl font-bold">App Name</h1>
           </div>
@@ -86,13 +88,13 @@ const SoundLibrary = () => {
               Log Out
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Main Content */}
       <div 
         ref={mainContentRef}
-        className="bg-white flex flex-row justify-center w-full"
+        className="bg-white flex flex-row justify-center w-full mt-12"
       >
         <div className="bg-white w-[375px] h-[812px] relative">
           {/* Header */}
