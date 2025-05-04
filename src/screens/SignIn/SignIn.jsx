@@ -195,14 +195,15 @@ export const SignIn = () => {
                 </div>
               </div>
 
-              <Button 
+              <Link
+                to='/sound-library'
                 type="submit"
                 className="flex items-center justify-center gap-2.5 px-8 py-4 self-stretch w-full bg-[#00ae34] rounded-[100px] shadow-shadow-01 h-auto hover:bg-[#009c2e]"
               >
                 <span className="flex-1 [font-family:'Roboto',Helvetica] font-medium text-white text-base text-center tracking-[0] leading-6">
                   Login
                 </span>
-              </Button>
+              </Link>
             </div>
 
             <div className="flex items-center justify-center gap-1 relative self-stretch w-full flex-[0_0_auto]">

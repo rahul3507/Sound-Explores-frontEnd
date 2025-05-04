@@ -6,6 +6,7 @@ import { SignIn } from "./screens/SignIn";
 import { ForgetPassword } from "./screens/ForgetPassword/ForgetPassword";
 import { SendOtp } from "./screens/SendOtp/SendOtp";
 import { ResetPassword } from "./screens/ResetPassword/ResetPassword";
+import SoundLibrary from "./screens/SoundLibrary/SoundLibrary";
 
 createRoot(document.getElementById("app")).render(
   <StrictMode>
@@ -17,6 +18,7 @@ createRoot(document.getElementById("app")).render(
         <Route path="/forget-password" element={<ForgetPassword/>}/>
         <Route path="/send-code" element={<SendOtp/>} />
         <Route path="/reset-password" element={<ResetPassword/>}/>
+        <Route path="/sound-library" element={<SoundLibrary/>}/>
       </Routes>
     </BrowserRouter>
     
