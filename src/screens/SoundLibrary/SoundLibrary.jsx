@@ -42,7 +42,7 @@ const SoundLibrary = () => {
   }, [sidebarOpen]);
 
   return (
-    <div className="bg-white flex justify-center h-screen w-full overflow-hidden">
+    <div className="bg-white flex flex-r justify-center h-screen w-full overflow-hidden">
       {/* Sidebar */}
       <div 
         ref={sidebarRef}
@@ -57,9 +57,9 @@ const SoundLibrary = () => {
       {/* Main Content */}
       <div 
         ref={mainContentRef}
-        className="bg-white flex flex-row justify-center w-full mt-12"
+        className="bg-white  flex flex-row justify-center w-full mt-12"
       >
-        <div className="bg-white w-[375px] h-[812px] relative">
+        <div className="bg-white w-[375px] h-[812px] items-center relative">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
             <button className="p-2" onClick={toggleSidebar}>

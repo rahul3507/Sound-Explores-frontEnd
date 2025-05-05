@@ -34,12 +34,13 @@ const SideBar = () => {
               </nav>
               
               <div className="p-4 mt-auto">
-                <button 
+                <Link
+                  to='/' 
                   onClick={handleLogout}
                   className="w-full text-left px-4 py-3 hover:bg-gray-800 transition-colors"
                 >
                   Log Out
-                </button>
+                </Link>
               </div>
             </div>
   )

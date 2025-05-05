@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ChevronLeft, MoreVertical } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
+import { Button } from "../../../components/ui/button";
 
 const EditProfile = () => {
   // State for form fields
@@ -48,7 +49,7 @@ const EditProfile = () => {
       </div>
 
       {/* Form */}
-      <div className="flex-1 p-6">
+      <form onSubmit={handleSubmit} className="flex-1 p-6">
         <div className="space-y-6">
           {/* Full Name */}
           <div>
@@ -129,16 +130,16 @@ const EditProfile = () => {
         </div>
 
         {/* Update Button */}
-        <Link 
-                to='/profile'
+        <Button 
+                asChild
                 type="submit"
                 className="flex items-center mt-10  justify-center gap-2.5 px-8 py-2 self-stretch w-full bg-[#00ae34] rounded-[100px] shadow-shadow-01 h-auto hover:bg-[#009c2e]"
                 >
                 <span className="flex-1 [font-family:'Roboto',Helvetica] font-medium text-white text-base text-center tracking-[0] leading-6">
                 Update
                 </span>
-        </Link>
-      </div>
+        </Button>
+      </form>
     </div>
   );
 };

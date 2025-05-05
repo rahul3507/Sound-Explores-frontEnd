@@ -43,7 +43,7 @@ const Profile = () => {
         <div className="relative mb-4">
           <div className="w-32 h-32 rounded-full overflow-hidden">
             <img 
-              src="./img/profile.png" 
+              src="/profile.png" 
               alt="Profile" 
               className="w-full h-full object-cover"
             />
@@ -73,7 +73,9 @@ const Profile = () => {
         </Link>
 
         {/* Upgrade Plan */}
-        <div className="flex items-center justify-between py-2 border-b">
+        <Link
+            to="/payment"
+         className="flex items-center justify-between py-2 border-b">
           <div className="flex items-center">
             <div className="p-2 mr-4">
               <Crown className="w-6 h-6" />
@@ -81,7 +83,7 @@ const Profile = () => {
             <span className="text-lg font-medium">Upgrade Plan</span>
           </div>
           <ChevronRight className="w-6 h-6 text-gray-400" />
-        </div>
+        </Link>
 
         
 
