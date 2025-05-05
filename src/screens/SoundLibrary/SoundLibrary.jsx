@@ -3,10 +3,16 @@ import { Menu, User } from "lucide-react";
 import SoundList from "./SoundList/SoundList";
 import SideBar from "./SideBar";
 import { Link } from "react-router-dom";
+import { Friends } from "./Friends/Friends";
+
 
 const SoundLibrary = () => {
   // State for sidebar visibility
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const [isSoundSelected, setIsSoundSelected] = useState(true);
+
+  const [title, setTitle] = useState("Sound Library");
   
   // Ref for detecting clicks outside sidebar
   const sidebarRef = useRef(null);
@@ -46,11 +52,11 @@ const SoundLibrary = () => {
       {/* Sidebar */}
       <div 
         ref={sidebarRef}
-        className={`fixed md:relative z-20 bg-gray-900 text-white w-64 h-full transition-transform duration-300 ease-in-out ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed  z-20 bg-gray-900 text-white w-64 h-full transition-transform duration-300 ease-in-out ${
+          sidebarOpen ? "translate-x-[-4rem]" : "-translate-x-[70rem]"
         }`}
       >
-        <SideBar/>
+        <SideBar onTitleChange={setTitle} onSoundListChange={setIsSoundSelected} />
 
       </div>
 
@@ -61,19 +67,20 @@ const SoundLibrary = () => {
       >
         <div className="bg-white w-[375px] h-[812px] items-center relative">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
-            <button className="p-2" onClick={toggleSidebar}>
+          <div className="flex items-center justify-between px-0 py-4 border-b border-gray-100">
+            <button className="p-0" onClick={toggleSidebar}>
               <Menu className="w-6 h-6 text-black" />
             </button>
-            <h1 className="text-xl font-medium text-center">Sound Library</h1>
+            <h1 className="text-xl font-medium text-center">{title}</h1>
             <Link
               to= "/profile"
-             className="p-2">
+             className="px-0 py-2">
               <User className="w-6 h-6 text-black" />
             </Link>
           </div>
 
-          <SoundList/>
+          {isSoundSelected ? <SoundList/> : <Friends/>}
+          
 
           
         </div>

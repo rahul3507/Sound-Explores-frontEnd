@@ -5,6 +5,7 @@ import { Button } from '../../../components/ui/button'
 import { Link } from 'react-router-dom'
 import { Search } from 'lucide-react'
 import { Input } from '../../../components/ui/input'
+import { SearchBar } from '../../../components/component/SearchBar'
 
 const SoundList = () => {
     const [sounds, setSounds] = useState([
@@ -40,19 +41,11 @@ const SoundList = () => {
   return (
     
     <div >
-        {/* Search Bar */}
-        <div className="px-4 py-3">
-            <div className="bg-gray-100 rounded-md flex items-center px-4 py-2">
-              <Search className="w-5 h-5 text-gray-400 mr-2" />
-              <Input 
-                placeholder="Search" 
-                className="border-none bg-transparent shadow-none focus:ring-0 p-0 h-auto text-base"
-              />
-            </div>
-          </div>
+        <SearchBar/>
+        
 
           {/* Sound List */}
-          <div className="px-4 py-2 flex-1 overflow-auto">
+          <div className="px-0 py-2 flex-1 overflow-auto">
             {sounds.map((sound) => (
               <div key={sound.id} className="flex items-center mb-4">
                 <Checkbox
