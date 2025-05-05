@@ -43,7 +43,7 @@ const Profile = () => {
         <div className="relative mb-4">
           <div className="w-32 h-32 rounded-full overflow-hidden">
             <img 
-              src="/api/placeholder/200/200" 
+              src="./img/profile.png" 
               alt="Profile" 
               className="w-full h-full object-cover"
             />
