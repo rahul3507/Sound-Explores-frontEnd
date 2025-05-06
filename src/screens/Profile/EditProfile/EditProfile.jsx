@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ChevronLeft, MoreVertical } from "lucide-react";
 import { Form, Link } from "react-router-dom";
 import { Button } from "../../../components/ui/button";
+import { StatusBar } from "../../../components/component/StatusBar";
 
 const EditProfile = () => {
   // State for form fields
@@ -31,7 +32,8 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="bg-white flex flex-col mt-10 h-full w-full max-w-md mx-auto">
+    <div className="bg-white flex flex-col mt-10 h-full w-[375px] max-w-md mx-auto">
+      <StatusBar/>
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center">

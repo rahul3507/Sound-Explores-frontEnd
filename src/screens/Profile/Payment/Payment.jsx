@@ -2,6 +2,7 @@ import { ArrowLeft, ChevronLeft, MoreVertical } from 'lucide-react'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '../../../components/ui/button'
+import { StatusBar } from '../../../components/component/StatusBar'
 
 export const Payment = () => {
     const [formData, setFormData] = useState(
@@ -30,6 +31,7 @@ export const Payment = () => {
   return (
     <div className='bg-white flex flex-row justify-center w-full mt-12'>
         <div className='bg-white w-[375px] h-[812px] relative'>
+          <StatusBar/>
             {/* Header */}
             <div className="flex items-center justify-between p-0 border-b">
                    <div className="flex items-center">

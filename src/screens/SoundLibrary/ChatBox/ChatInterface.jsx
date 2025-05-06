@@ -110,15 +110,7 @@ export default function ChatInterface() {
           </button>
         </div>
 
-        <div className="flex justify-between px-2 py-2">
-          <button className="text-gray-400 p-2"><span className="font-bold text-xl">&lt;</span></button>
-          <button className="text-gray-400 p-2">GIF</button>
-          <button className="text-gray-400 p-2"><span className="font-bold">⚙️</span></button>
-          <button className="text-gray-400 p-2"><span className="font-bold">🖼️</span></button>
-          <button className="text-gray-400 p-2"><span className="font-bold">😊</span></button>
-          <button className="text-gray-400 p-2"><MoreHorizontal size={20} /></button>
-          <button className="text-gray-400 p-2"><Mic size={20} /></button>
-        </div>
+        
 
         {/* Virtual Keyboard */}
         {isKeyboardOpen && (

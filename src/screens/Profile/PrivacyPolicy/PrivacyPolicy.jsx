@@ -2,6 +2,7 @@ import { ChevronLeft, MoreVertical } from 'lucide-react'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PrivacySection } from '../../../components/profile/PrivacySection';
+import { StatusBar } from '../../../components/component/StatusBar';
 
 export const PrivacyPolicy = () => {
     const [items, setItems] = useState([
@@ -12,8 +13,9 @@ export const PrivacyPolicy = () => {
             
           ]);
   return (
-    <div className="bg-white mt-12 flex flex-row justify-center w-full">
-      <div className="bg-white w-[375px] h-[812px] relative">
+    <div className="bg-white mt-12 flex flex-row justify-center w-[full]">
+      <div className="bg-white w-[375px] h-full relative">
+        <StatusBar/>
         {/* Header */}
       <div className="flex items-center justify-between p-0 border-b">
         <div className="flex items-center">

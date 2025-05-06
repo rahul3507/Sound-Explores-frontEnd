@@ -4,6 +4,7 @@ import SoundList from "./SoundList/SoundList";
 import SideBar from "./SideBar";
 import { Link } from "react-router-dom";
 import { Friends } from "./Friends/Friends";
+import { StatusBar } from "../../components/component/StatusBar";
 
 
 const SoundLibrary = () => {
@@ -66,6 +67,7 @@ const SoundLibrary = () => {
         className="bg-white  flex flex-row justify-center w-full mt-12"
       >
         <div className="bg-white w-[375px] h-[812px] items-center relative">
+          <StatusBar/>
           {/* Header */}
           <div className="flex items-center justify-between px-0 py-4 border-b border-gray-100">
             <button className="p-0" onClick={toggleSidebar}>

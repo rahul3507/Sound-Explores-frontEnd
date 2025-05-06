@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ChevronLeft, MoreVertical, Pencil, User, Crown, Lock, LogOut, CreditCard, ChevronRight, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import { DownBar } from "./DownBar";
+import { StatusBar } from "../../components/component/StatusBar";
 
 const Profile = () => {
   // State for logout modal
@@ -22,7 +23,8 @@ const Profile = () => {
 
   return (
     <div className="bg-white mt-12 flex flex-row justify-center w-full">
-      <div className="bg-white w-[375px] h-[812px] relative">
+      <div className="bg-white w-[375px] h-full relative">
+        <StatusBar/>
         {/* Header */}
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center">
