@@ -33,7 +33,7 @@ const SideBar = ({ onTitleChange,onSoundListChange }) => {
                   <li>
                     <button
                       onClick={() =>handleSoundButtonClick(1)}
-                      // className="w-full `${onSoundListChange ? 'bg-white text-black' : 'bg-black text-white'}` text-left px-4 py-3 rounded-md hover:bg-gray-800 "
+                      
                       className={`px-4 py-2 rounded-md w-full text-left 
                         ${activeButton === 1 ? 'bg-white text-black' : 'bg-black text-white'}`}
                       >
