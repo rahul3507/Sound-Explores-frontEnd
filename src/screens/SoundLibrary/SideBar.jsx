@@ -1,22 +1,25 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const SideBar = ({ onTitleChange,onSoundListChange }) => {
 
+  const [activeButton, setActiveButton] = useState(1);
     // Handle logout
   const handleLogout = () => {
     console.log("Logging out");
     // Implement logout functionality
   };
 
-  const handleSoundButtonClick = () => {
+  const handleSoundButtonClick = (button) => {
     onTitleChange("Sound Library");
     onSoundListChange(true);
+    setActiveButton(button);
   };
-  const handleFriendButtonClick = () => {
+  const handleFriendButtonClick = (button) => {
     onTitleChange("Friend Library");
     onSoundListChange(false);
+    setActiveButton(button);
   }
 
   return (
@@ -29,18 +32,20 @@ const SideBar = ({ onTitleChange,onSoundListChange }) => {
                 <ul className="space-y-4 ">
                   <li>
                     <button
-                      onClick={handleSoundButtonClick}
+                      onClick={() =>handleSoundButtonClick(1)}
                       // className="w-full `${onSoundListChange ? 'bg-white text-black' : 'bg-black text-white'}` text-left px-4 py-3 rounded-md hover:bg-gray-800 "
                       className={`px-4 py-2 rounded-md w-full text-left 
-                        ${onSoundListChange ? 'bg-white text-black' : 'bg-black text-white'}`}
+                        ${activeButton === 1 ? 'bg-white text-black' : 'bg-black text-white'}`}
                       >
                       Sound
                     </button>
                   </li>
                   <li>
                     <button 
-                      onClick={handleFriendButtonClick}
-                      className="w-full text-left px-4 py-2 rounded-md hover:bg-gray-800 transition-colors">
+                      onClick={() =>handleFriendButtonClick(2)}
+                      className={`px-4 py-2 rounded-md w-full text-left 
+                        ${activeButton === 2 ? 'bg-white text-black' : 'bg-black text-white'}`}
+                      >
                       Friend
                     </button>
                   </li>
