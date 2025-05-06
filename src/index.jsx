@@ -11,6 +11,7 @@ import Profile from "./screens/Profile/Profile";
 import EditProfile from "./screens/Profile/EditProfile/EditProfile";
 import { PrivacyPolicy } from "./screens/Profile/PrivacyPolicy/PrivacyPolicy";
 import { Payment } from "./screens/Profile/Payment/Payment";
+import ChatInterface from "./screens/SoundLibrary/ChatBox/ChatInterface";
 
 createRoot(document.getElementById("app")).render(
   <StrictMode>
@@ -27,6 +28,7 @@ createRoot(document.getElementById("app")).render(
         <Route path="/edit-profile" element={<EditProfile/>} />
         <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
         <Route path="/payment" element={<Payment/>}/>
+        <Route path="/chat-interface" element={<ChatInterface/>}/>
       </Routes>
     </BrowserRouter>
     
