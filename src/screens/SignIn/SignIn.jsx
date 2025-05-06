@@ -128,6 +128,7 @@ export const SignIn = () => {
                         <Input
                           name="email"
                           value={formData.email}
+                          required
                           onChange={handleInputChange}
                           className={`border-none px-4 py-3 h-auto font-base-small-regular font-[number:var(--base-small-regular-font-weight)] text-[#707070] text-[length:var(--base-small-regular-font-size)] tracking-[var(--base-small-regular-letter-spacing)] leading-[var(--base-small-regular-line-height)] [font-style:var(--base-small-regular-font-style)] ${errors.email ? "border-red-500" : ""}`}
                           placeholder="Enter your Email..."
@@ -173,6 +174,7 @@ export const SignIn = () => {
                   <div className="items-center gap-2 flex-1 grow flex relative">
                     <Checkbox
                       id="remember-me"
+                      required
                       checked={formData.rememberMe}
                       onCheckedChange={handleCheckboxChange}
                       className="w-5 h-5 border-2 border-[#00ae34] rounded"

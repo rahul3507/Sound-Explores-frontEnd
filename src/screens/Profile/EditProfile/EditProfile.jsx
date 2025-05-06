@@ -32,7 +32,7 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="bg-white flex flex-col mt-10 h-full w-[375px] max-w-md mx-auto">
+    <div className="bg-white flex flex-col  h-full w-[375px] max-w-md mx-auto">
       <StatusBar/>
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b">

@@ -22,8 +22,8 @@ const Profile = () => {
   };
 
   return (
-    <div className="bg-white mt-12 flex flex-row justify-center w-full">
-      <div className="bg-white w-[375px] h-full relative">
+    <div className="bg-white  flex flex-row justify-center w-full">
+      <div className="bg-white w-[375px] h-[812px] relative">
         <StatusBar/>
         {/* Header */}
       <div className="flex items-center justify-between p-4 border-b">

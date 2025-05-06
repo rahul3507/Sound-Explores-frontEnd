@@ -29,11 +29,11 @@ export const Payment = () => {
         // Here you would typically send the data to your backend
     };
   return (
-    <div className='bg-white flex flex-row justify-center w-full mt-12'>
-        <div className='bg-white w-[375px] h-[812px] relative'>
+    <div className='bg-white flex flex-row justify-center w-full '>
+        <div className='bg-white w-[375px]  relative'>
           <StatusBar/>
             {/* Header */}
-            <div className="flex items-center justify-between p-0 border-b">
+            <div className="flex items-center justify-between p-4 border-b">
                    <div className="flex items-center">
                      <Link
                        to="/profile"

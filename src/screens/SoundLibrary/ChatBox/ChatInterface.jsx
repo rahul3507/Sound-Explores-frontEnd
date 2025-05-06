@@ -51,7 +51,7 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100 w-[375px] mx-auto relative overflow-hidden">
+    <div className="flex flex-col mt-12 h-screen bg-gray-100 w-[375px] mx-auto relative overflow-hidden">
       {/* Status bar */}
       <StatusBar/>
       {/* Header */}

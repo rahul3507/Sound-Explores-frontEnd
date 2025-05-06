@@ -64,7 +64,7 @@ const SoundLibrary = () => {
       {/* Main Content */}
       <div 
         ref={mainContentRef}
-        className="bg-white  flex flex-row justify-center w-full mt-12"
+        className="bg-white  flex flex-row justify-center w-full "
       >
         <div className="bg-white w-[375px] h-[812px] items-center relative">
           <StatusBar/>
