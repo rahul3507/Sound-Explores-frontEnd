@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Search, Menu, User } from 'lucide-react';
 import { SearchBar } from '../../../components/component/SearchBar';
+import { FindFriends } from './FindFriends';
 
 export const Friends = () => {
   const [selectedTab, setSelectedTab] = useState('yourFriends');
@@ -57,6 +58,7 @@ export const Friends = () => {
       </div>
       
         <SearchBar/>
+        <FindFriends friends={friends}/>
     </div>
   )
 }

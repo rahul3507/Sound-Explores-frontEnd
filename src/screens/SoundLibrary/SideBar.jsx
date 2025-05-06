@@ -17,7 +17,7 @@ const SideBar = ({ onTitleChange,onSoundListChange }) => {
     setActiveButton(button);
   };
   const handleFriendButtonClick = (button) => {
-    onTitleChange("Friend Library");
+    onTitleChange("Friends");
     onSoundListChange(false);
     setActiveButton(button);
   }
