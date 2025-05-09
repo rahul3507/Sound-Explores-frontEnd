@@ -1,8 +1,8 @@
 // src\layouts\AuthLayout.jsx
-import { Outlet, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { useAuth } from '../contexts/AuthContext';
-import LoadingScreen from '../components/ui/LoadingScreen';
+import { Outlet, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useAuth } from "../contexts/AuthContext";
+import LoadingScreen from "../components/ui/LoadingScreen";
 
 const AuthLayout = () => {
   const { loading } = useAuth();
@@ -19,10 +19,10 @@ const AuthLayout = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="min-h-screen bg-background flex flex-col justify-center items-center"
+      className='min-h-screen bg-background flex flex-col justify-center items-center'
     >
-      <main className="w-full max-w-md">
-        <div className="bg-white w-full h-full max-h-[812px]">
+      <main className='w-full max-w-md'>
+        <div className='bg-background w-full h-full max-h-screen'>
           <Outlet />
         </div>
       </main>

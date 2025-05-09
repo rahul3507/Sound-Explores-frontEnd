@@ -52,7 +52,7 @@ const SignIn = () => {
 
   return (
     <div className='bg-gray-50 flex flex-row justify-center w-full min-h-screen'>
-      <div className='bg-white w-full max-w-md relative shadow-md'>
+      <div className='bg-card w-full max-w-md relative shadow-md'>
         <StatusBar />
 
         {/* Header */}
@@ -60,7 +60,7 @@ const SignIn = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className={`flex items-center justify-center p-4 border-b bg-white sticky top-0 z-10 transition-shadow ${
+          className={`flex items-center justify-center p-4 border-b    sticky top-0 z-10 transition-shadow ${
             scrolled ? "shadow-md" : ""
           }`}
         >
