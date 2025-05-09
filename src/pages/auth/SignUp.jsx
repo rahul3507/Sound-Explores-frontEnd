@@ -110,7 +110,7 @@ const SignUp = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className='p-6'>
-          <div className='space-y-6'>
+          <div className='space-y-4'>
             {/* Name Field */}
             <div className='flex flex-col gap-2'>
               <label className='font-medium text-base'>Name</label>
@@ -227,7 +227,7 @@ const SignUp = () => {
             </motion.div>
 
             {/* Already have an account */}
-            <div className='flex items-center justify-center gap-1 mt-6'>
+            <div className='flex items-center justify-center gap-1 mt-2'>
               <p className='text-gray-700 text-sm'>Already have an account?</p>
               <Link to='/' className='font-medium text-blue-500 text-sm'>
                 Sign In
