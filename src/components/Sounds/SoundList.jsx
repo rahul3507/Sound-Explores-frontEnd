@@ -1,6 +1,9 @@
+// src\components\Sounds\SoundList.jsx
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
+import { Search } from "lucide-react";
 
 const SoundList = () => {
   const [sounds, setSounds] = useState([
@@ -49,6 +52,7 @@ const SoundList = () => {
   ]);
 
   const [filteredSounds, setFilteredSounds] = useState(sounds);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Toggle sound selection (radio button behavior)
   const toggleSelect = (id) => {
@@ -58,18 +62,7 @@ const SoundList = () => {
         : { ...sound, selected: false }
     );
     setSounds(updatedSounds);
-    setFilteredSounds(
-      updatedSounds.filter((sound) =>
-        filteredSounds.some((fs) => fs.id === sound.id)
-      )
-    );
-
-    const selectedSound = updatedSounds.find((s) => s.id === id);
-    console.log(`Sound ${id} (${selectedSound.name}) selected`);
-    console.log(
-      "Currently selected sound:",
-      updatedSounds.filter((s) => s.selected).map((s) => s.id)
-    );
+    applySearch(searchTerm, updatedSounds);
   };
 
   // Play/pause sound function (only one at a time)
@@ -82,20 +75,7 @@ const SoundList = () => {
     );
 
     setSounds(updatedSounds);
-    setFilteredSounds(
-      filteredSounds.map((sound) =>
-        sound.id === id
-          ? { ...sound, isPlaying: !sound.isPlaying }
-          : { ...sound, isPlaying: false }
-      )
-    );
-
-    const targetSound = sounds.find((s) => s.id === id);
-    console.log(
-      `${targetSound.isPlaying ? "Stopping" : "Playing"} sound: ${id} (${
-        targetSound.name
-      })`
-    );
+    applySearch(searchTerm, updatedSounds);
   };
 
   // Send to friend function (only selected sound)
@@ -106,15 +86,23 @@ const SoundList = () => {
         id: selectedSound.id,
         name: selectedSound.name,
       });
+      // Here you would implement the actual send functionality
     }
   };
 
   // Handle search
-  const handleSearch = (term) => {
+  const handleSearch = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    applySearch(term, sounds);
+  };
+
+  // Apply search filter
+  const applySearch = (term, soundList) => {
     if (!term || !term.trim()) {
-      setFilteredSounds(sounds);
+      setFilteredSounds(soundList);
     } else {
-      const filtered = sounds.filter((sound) =>
+      const filtered = soundList.filter((sound) =>
         sound.name.toLowerCase().includes(term.toLowerCase())
       );
       setFilteredSounds(filtered);
@@ -168,7 +156,7 @@ const SoundList = () => {
     }, [isPlaying, animationSpeed]);
 
     return (
-      <svg viewBox={`0 0 ${waveLines.length * 2} 24`} className="w-full h-8">
+      <svg viewBox={`0 0 ${waveLines.length * 2} 24`} className='w-full h-8'>
         {waveLines.map((height, index) => {
           const startY = 12 - height / 2;
           const endY = 12 + height / 2;
@@ -181,8 +169,8 @@ const SoundList = () => {
               x2={index * 2}
               y2={endY}
               stroke={isPlaying ? "#00ae34" : "#D1D5DB"}
-              strokeWidth="0.5"
-              strokeLinecap="round"
+              strokeWidth='0.5'
+              strokeLinecap='round'
             />
           );
         })}
@@ -191,94 +179,102 @@ const SoundList = () => {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className='flex flex-col h-full'
+    >
       {/* Search Bar */}
-      <div className="relative mb-4">
+      <div className='relative mb-4'>
         <input
-          type="text"
-          placeholder="Search"
-          onChange={(e) => handleSearch(e.target.value)}
-          className="w-full p-2 pl-8 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          type='text'
+          placeholder='Search sounds'
+          value={searchTerm}
+          onChange={handleSearch}
+          className='w-full p-3 pl-10 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
         />
-        <svg
-          className="absolute left-2 top-2.5 h-4 w-4 text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
+        <Search className='absolute left-3 top-3 h-5 w-5 text-gray-400' />
       </div>
 
       {/* Sound List */}
-      <div className="flex-1 overflow-auto">
-        {filteredSounds.length > 0 ? (
-          <div className="space-y-2">
-            {filteredSounds.map((sound) => (
-              <div
-                key={sound.id}
-                className={`flex items-center p-2 rounded-lg ${
-                  sound.selected ? "bg-green-50 border border-green-200" : ""
-                } hover:bg-gray-100`}
-              >
-                <div
-                  className="flex items-center cursor-pointer"
-                  onClick={() => toggleSelect(sound.id)}
+      <div className='flex-1 overflow-auto'>
+        <AnimatePresence>
+          {filteredSounds.length > 0 ? (
+            <motion.div className='space-y-2'>
+              {filteredSounds.map((sound) => (
+                <motion.div
+                  key={sound.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className={`flex items-center p-3 rounded-lg ${
+                    sound.selected ? "bg-blue-50 border border-blue-200" : ""
+                  } hover:bg-gray-50 transition-colors`}
                 >
-                  <Checkbox
-                    id={`sound-${sound.id}`}
-                    checked={sound.selected}
-                    onCheckedChange={() => toggleSelect(sound.id)}
-                    className="w-5 h-5 border-2 border-gray-300 rounded mr-3"
-                  />
-                  <div className="mr-3">
-                    <p className="text-sm font-medium">{sound.name}</p>
-                    <p className="text-xs text-gray-500">{sound.duration}</p>
+                  <div
+                    className='flex items-center cursor-pointer'
+                    onClick={() => toggleSelect(sound.id)}
+                  >
+                    <Checkbox
+                      id={`sound-${sound.id}`}
+                      checked={sound.selected}
+                      onCheckedChange={() => toggleSelect(sound.id)}
+                      className='w-5 h-5 border-2 border-gray-300 rounded mr-3'
+                    />
+                    <div className='mr-3'>
+                      <p className='text-sm font-medium'>{sound.name}</p>
+                      <p className='text-xs text-gray-500'>{sound.duration}</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex-1 mx-2">
-                  {/* Dynamic waveform */}
-                  <AudioWave isPlaying={sound.isPlaying} />
-                </div>
+                  <div className='flex-1 mx-2'>
+                    {/* Dynamic waveform */}
+                    <AudioWave isPlaying={sound.isPlaying} />
+                  </div>
 
-                <Button
-                  onClick={() => togglePlaySound(sound.id)}
-                  className={`rounded-full w-14 h-7 flex items-center justify-center text-white text-xs ${
-                    sound.isPlaying
-                      ? "bg-red-500 hover:bg-red-600"
-                      : "bg-green-500 hover:bg-green-600"
-                  }`}
-                >
-                  {sound.isPlaying ? "Stop" : "Play"}
-                </Button>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-64">
-            <p className="text-gray-500">No sounds found</p>
-          </div>
-        )}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => togglePlaySound(sound.id)}
+                    className={`rounded-full w-16 h-8 flex items-center justify-center text-white text-xs font-medium ${
+                      sound.isPlaying
+                        ? "bg-red-500 hover:bg-red-600"
+                        : "bg-blue-500 hover:bg-blue-600"
+                    } transition-colors shadow-sm`}
+                  >
+                    {sound.isPlaying ? "Stop" : "Play"}
+                  </motion.button>
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className='flex flex-col items-center justify-center h-64'
+            >
+              <p className='text-gray-500'>No sounds found</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Bottom Action Button */}
-      <Button
-        onClick={sendToFriend}
-        disabled={!sounds.some((sound) => sound.selected)}
-        className="flex items-center justify-center gap-2.5 px-6 py-3 self-stretch w-full bg-green-500 rounded-full shadow-md h-auto hover:bg-green-600 mt-4 mb-4 disabled:opacity-50"
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
       >
-        <span className="font-medium text-white text-base text-center">
+        <Button
+          onClick={sendToFriend}
+          disabled={!sounds.some((sound) => sound.selected)}
+          className='flex items-center justify-center gap-2.5 px-6 py-3 w-full bg-blue-500 rounded-full shadow-md h-auto hover:bg-blue-600 mt-4 mb-4 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium'
+        >
           Send to Friend
-        </span>
-      </Button>
-    </div>
+        </Button>
+      </motion.div>
+    </motion.div>
   );
 };
 

@@ -17,7 +17,7 @@ const SoundLibrary = lazy(() =>
   import("./pages/app/SoundLibrary/SoundLibrary")
 );
 const Friends = lazy(() => import("./pages/app/Friends/Friends"));
-const Profile = lazy(() => import("./pages/app/Profile"));
+const Profile = lazy(() => import("./pages/app/Profile/Profile"));
 const EditProfile = lazy(() => import("./pages/app/Profile/EditProfile"));
 const PrivacyPolicy = lazy(() => import("./pages/app/Profile/PrivacyPolicy"));
 const Payment = lazy(() => import("./pages/app/Profile/Payment"));

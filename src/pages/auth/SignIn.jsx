@@ -1,3 +1,4 @@
+// src\pages\auth\SignIn.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
@@ -9,7 +10,8 @@ import { Card, CardContent } from "../../components/ui/card";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Input } from "../../components/ui/input";
 import { useAuth } from "../../contexts/AuthContext";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { StatusBar } from "../../components/common/StatusBar";
 
 // Validation schema
 const loginSchema = z.object({
@@ -21,12 +23,13 @@ const loginSchema = z.object({
 const SignIn = () => {
   const { signIn } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   // React Hook Form
   const {
     register,
     handleSubmit,
-    control, // Add control from useForm
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
@@ -48,153 +51,150 @@ const SignIn = () => {
   };
 
   return (
-    <div className="bg-white flex flex-row justify-center w-full">
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="bg-white w-[375px] h-[812px] relative"
-      >
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col w-full items-start gap-6 px-5 py-10 absolute top-[254px] left-0 bg-white"
+    <div className='bg-gray-50 flex flex-row justify-center w-full min-h-screen'>
+      <div className='bg-white w-full max-w-md relative shadow-md'>
+        <StatusBar />
+
+        {/* Header */}
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className={`flex items-center justify-center p-4 border-b bg-white sticky top-0 z-10 transition-shadow ${
+            scrolled ? "shadow-md" : ""
+          }`}
         >
-          <h1 className="relative self-stretch mt-[-1.00px] font-h01-bold text-[#0b0b0b] text-[2rem] font-bold tracking-tight leading-tight">
-            Login to your Account
-          </h1>
+          <h1 className='text-xl font-bold'>Sign In</h1>
+        </motion.div>
 
-          <div className="flex-col items-start gap-8 self-stretch w-full flex-[0_0_auto] flex relative">
-            <div className="flex flex-col items-start gap-6 relative self-stretch w-full flex-[0_0_auto]">
-              <div className="flex flex-col items-start gap-3 relative self-stretch w-full flex-[0_0_auto]">
-                <div className="flex flex-col items-start gap-4 relative self-stretch w-full flex-[0_0_auto]">
-                  {/* Email Field */}
-                  <div className="flex flex-col items-start gap-2 relative self-stretch w-full flex-[0_0_auto]">
-                    <label className="relative self-stretch mt-[-1.00px] font-medium text-[#0b0b0b] text-base">
-                      Email
-                    </label>
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className='flex flex-col items-center p-6 border-b bg-gradient-to-b from-blue-50 to-white'
+        >
+          <motion.img
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className='w-36 h-36 object-cover'
+            alt='Logo'
+            src='/logo.png'
+          />
+          <h2 className='text-2xl font-bold mb-1'>Welcome Back</h2>
+          <p className='text-xs text-gray-500'>
+            Login to your account to continue
+          </p>
+        </motion.div>
 
-                    <Card className="p-0 w-full border border-solid border-[#e3ecf7] shadow-none">
-                      <CardContent className="p-0">
-                        <Input
-                          {...register("email")}
-                          className={`border-none px-4 py-3 h-auto text-[#707070] text-sm ${
-                            errors.email ? "border-red-500" : ""
-                          }`}
-                          placeholder="Enter your Email..."
-                        />
-                      </CardContent>
-                    </Card>
-                    {errors.email && (
-                      <span className="text-red-500 text-sm">
-                        {errors.email.message}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Password Field */}
-                  <div className="flex flex-col items-start gap-2 relative self-stretch w-full flex-[0_0_auto]">
-                    <label className="relative self-stretch mt-[-1.00px] font-medium text-[#0b0b0b] text-base">
-                      Password
-                    </label>
-
-                    <Card className="p-0 w-full border border-solid border-[#e3ecf7] shadow-none">
-                      <CardContent className="p-0 flex items-center">
-                        <Input
-                          {...register("password")}
-                          className={`border-none px-4 py-3 h-auto text-[#707070] text-sm ${
-                            errors.password ? "border-red-500" : ""
-                          }`}
-                          placeholder="Enter your Password..."
-                          type={showPassword ? "text" : "password"}
-                        />
-                        <div
-                          className="absolute right-4 cursor-pointer"
-                          onClick={togglePasswordVisibility}
-                        >
-                          {showPassword ? (
-                            <EyeOffIcon className="w-6 h-6 text-gray-500" />
-                          ) : (
-                            <EyeIcon className="w-6 h-6 text-gray-500" />
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                    {errors.password && (
-                      <span className="text-red-500 text-sm">
-                        {errors.password.message}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Remember Me & Forget Password */}
-                <div className="items-center justify-between self-stretch w-full flex-[0_0_auto] flex relative mt-4">
-                  <div className="items-center gap-2 flex-1 grow flex relative">
-                    <Controller
-                      name="rememberMe"
-                      control={control}
-                      render={({ field }) => (
-                        <Checkbox
-                          id="remember-me"
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          className="w-5 h-5 border-2 border-[#00ae34] rounded"
-                        />
-                      )}
-                    />
-                    <label
-                      htmlFor="remember-me"
-                      className="relative flex-1 mt-[-1.00px] font-medium text-[#707070] text-sm cursor-pointer"
-                    >
-                      Remember Me
-                    </label>
-                  </div>
-
-                  <Link
-                    to="/forget-password"
-                    className="relative w-fit mt-[-1.00px] font-medium text-[#00ae34] text-sm text-right whitespace-nowrap"
-                  >
-                    Forget Password?
-                  </Link>
-                </div>
-              </div>
-
-              {/* Login Button */}
-              <Button
-                type="submit"
-                className="flex items-center justify-center gap-2.5 px-8 py-4 self-stretch w-full bg-[#00ae34] rounded-[100px] shadow-shadow-01 h-auto hover:bg-[#009c2e]"
-              >
-                <span className="flex-1 font-medium text-white text-base text-center tracking-[0] leading-6">
-                  Login
+        {/* Form */}
+        <form onSubmit={handleSubmit(onSubmit)} className='p-6'>
+          <div className='space-y-6'>
+            {/* Email Field */}
+            <div className='flex flex-col gap-2'>
+              <label className='font-medium text-base'>Email</label>
+              <Card className='p-0 w-full border border-solid border-gray-200 shadow-none'>
+                <CardContent className='p-0'>
+                  <Input
+                    {...register("email")}
+                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                      errors.email ? "border-red-500" : ""
+                    }`}
+                    placeholder='Enter your Email...'
+                  />
+                </CardContent>
+              </Card>
+              {errors.email && (
+                <span className='text-red-500 text-sm'>
+                  {errors.email.message}
                 </span>
-              </Button>
+              )}
             </div>
 
-            {/* Sign Up Link */}
-            <div className="flex items-center justify-center gap-1 relative self-stretch w-full flex-[0_0_auto]">
-              <p className="relative w-fit mt-[-1.00px] font-normal text-[#707070] text-sm text-right whitespace-nowrap">
-                Don't have any account?
-              </p>
+            {/* Password Field */}
+            <div className='flex flex-col gap-2'>
+              <label className='font-medium text-base'>Password</label>
+              <Card className='p-0 w-full border border-solid border-gray-200 shadow-none'>
+                <CardContent className='p-0 flex items-center'>
+                  <Input
+                    {...register("password")}
+                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                      errors.password ? "border-red-500" : ""
+                    }`}
+                    placeholder='Enter your Password...'
+                    type={showPassword ? "text" : "password"}
+                  />
+                  <div
+                    className='absolute right-10 cursor-pointer'
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <EyeOffIcon className='w-5 h-5 text-gray-500' />
+                    ) : (
+                      <EyeIcon className='w-5 h-5 text-gray-500' />
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+              {errors.password && (
+                <span className='text-red-500 text-sm'>
+                  {errors.password.message}
+                </span>
+              )}
+            </div>
+
+            {/* Remember Me & Forget Password */}
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center gap-2'>
+                <Controller
+                  name='rememberMe'
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox
+                      id='remember-me'
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className='w-4 h-4 rounded border-2 border-blue-500'
+                    />
+                  )}
+                />
+                <label
+                  htmlFor='remember-me'
+                  className='cursor-pointer text-sm text-gray-700'
+                >
+                  Remember Me
+                </label>
+              </div>
 
               <Link
-                to="/signup"
-                className="relative w-fit mt-[-1.00px] font-medium text-[#00ae34] text-sm whitespace-nowrap"
+                to='/forget-password'
+                className='font-medium text-blue-500 text-sm'
               >
+                Forgot Password?
+              </Link>
+            </div>
+
+            {/* Login Button */}
+            <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
+              <Button
+                type='submit'
+                className='w-full py-3 bg-blue-500 rounded-full text-white font-medium hover:bg-blue-600 transition-colors'
+              >
+                Sign In
+              </Button>
+            </motion.div>
+
+            {/* Sign Up Link */}
+            <div className='flex items-center justify-center gap-1 mt-6'>
+              <p className='text-gray-700 text-sm'>Don't have an account?</p>
+              <Link to='/signup' className='font-medium text-blue-500 text-sm'>
                 Sign Up
               </Link>
             </div>
           </div>
         </form>
-
-        <motion.img
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="absolute w-[200px] h-[200px] top-[54px] left-[94px] object-cover"
-          alt="Logo"
-          src="/logo.png"
-        />
-      </motion.div>
+      </div>
     </div>
   );
 };

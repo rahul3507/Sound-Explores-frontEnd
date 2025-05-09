@@ -1,15 +1,17 @@
+// src\pages\auth\SignUp.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, ArrowLeft } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Input } from "../../components/ui/input";
 import { useAuth } from "../../contexts/AuthContext";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { StatusBar } from "../../components/common/StatusBar";
 
 // Validation schema
 const signUpSchema = z.object({
@@ -29,12 +31,13 @@ const signUpSchema = z.object({
 const SignUp = () => {
   const { signUp } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   // React Hook Form
   const {
     register,
     handleSubmit,
-    control, // Add control for Controller
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(signUpSchema),
@@ -57,178 +60,182 @@ const SignUp = () => {
   };
 
   return (
-    <div className="bg-white flex flex-row justify-center w-full">
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="bg-white w-[375px] h-[812px]"
-      >
-        <div className="relative h-[797px] top-[15px]">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col w-[375px] items-start gap-6 px-5 py-10 absolute top-[143px] left-0 bg-white"
-          >
-            <h1 className="self-stretch font-bold text-[#0b0b0b] text-[2rem] tracking-tight leading-tight">
-              Create your
-              <br />
-              Account
-            </h1>
+    <div className='bg-gray-50 flex flex-row justify-center w-full min-h-screen'>
+      <div className='bg-white w-full max-w-md relative shadow-md'>
+        <StatusBar />
 
-            <div className="flex-col items-start gap-8 self-stretch w-full flex">
-              <div className="flex flex-col items-start gap-6 self-stretch w-full">
-                <div className="flex flex-col items-start gap-3 self-stretch w-full">
-                  <div className="flex flex-col items-start gap-4 self-stretch w-full">
-                    {/* Name Field */}
-                    <div className="flex flex-col items-start gap-2 self-stretch w-full">
-                      <label className="relative self-stretch mt-[-1.00px] font-medium text-[#0b0b0b] text-base">
-                        Name
-                      </label>
-                      <Card className="p-0 w-full border border-solid border-[#e3ecf7] shadow-none">
-                        <CardContent className="p-0">
-                          <Input
-                            {...register("name")}
-                            className={`border-none px-4 py-3 h-auto text-[#707070] text-sm ${
-                              errors.name ? "border-red-500" : ""
-                            }`}
-                            placeholder="Enter your name..."
-                          />
-                        </CardContent>
-                      </Card>
-                      {errors.name && (
-                        <span className="text-red-500 text-sm">
-                          {errors.name.message}
-                        </span>
-                      )}
-                    </div>
+        {/* Header */}
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className={`flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10 transition-shadow ${
+            scrolled ? "shadow-md" : ""
+          }`}
+        >
+          <div className='flex items-center'>
+            <Link to='/'>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className='p-2 rounded-full hover:bg-gray-100 transition-colors'
+              >
+                <ArrowLeft className='w-5 h-5' />
+              </motion.div>
+            </Link>
+            <h1 className='text-xl font-bold'>Sign Up</h1>
+          </div>
+        </motion.div>
 
-                    {/* Phone Field */}
-                    <div className="flex flex-col items-start gap-2 self-stretch w-full">
-                      <label className="relative self-stretch mt-[-1.00px] font-medium text-[#0b0b0b] text-base">
-                        Phone number
-                      </label>
-                      <Card className="p-0 w-full border border-solid border-[#e3ecf7] shadow-none">
-                        <CardContent className="p-0">
-                          <Input
-                            {...register("phone")}
-                            type="tel"
-                            className={`border-none px-4 py-3 h-auto text-[#707070] text-sm ${
-                              errors.phone ? "border-red-500" : ""
-                            }`}
-                            placeholder="Enter your Phone number..."
-                          />
-                        </CardContent>
-                      </Card>
-                      {errors.phone && (
-                        <span className="text-red-500 text-sm">
-                          {errors.phone.message}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Password Field */}
-                    <div className="flex flex-col items-start gap-2 self-stretch w-full">
-                      <label className="relative self-stretch mt-[-1.00px] font-medium text-[#0b0b0b] text-base">
-                        Password
-                      </label>
-                      <Card className="p-0 w-full border border-solid border-[#e3ecf7] shadow-none">
-                        <CardContent className="p-0 flex items-center">
-                          <Input
-                            {...register("password")}
-                            className={`border-none px-4 py-3 h-auto text-[#707070] text-sm ${
-                              errors.password ? "border-red-500" : ""
-                            }`}
-                            placeholder="Enter your Password..."
-                            type={showPassword ? "text" : "password"}
-                          />
-                          <div
-                            className="absolute right-10 cursor-pointer"
-                            onClick={togglePasswordVisibility}
-                          >
-                            {showPassword ? (
-                              <EyeOffIcon className="w-6 h-6 text-gray-500" />
-                            ) : (
-                              <EyeIcon className="w-6 h-6 text-gray-500" />
-                            )}
-                          </div>
-                        </CardContent>
-                      </Card>
-                      {errors.password && (
-                        <span className="text-red-500 text-sm">
-                          {errors.password.message}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Terms Checkbox */}
-                  <div className="items-center justify-between self-stretch w-full flex">
-                    <div className="flex items-center gap-2 flex-1">
-                      <Controller
-                        name="agreeToTerms"
-                        control={control}
-                        render={({ field }) => (
-                          <Checkbox
-                            id="terms"
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            className={`w-5 h-5 rounded border-2 ${
-                              errors.agreeToTerms
-                                ? "border-red-500"
-                                : "border-[#00ae34]"
-                            }`}
-                          />
-                        )}
-                      />
-                      <label
-                        htmlFor="terms"
-                        className="relative cursor-pointer flex-1 mt-[-1.00px] font-medium text-[#707070] text-sm"
-                      >
-                        I agree to the processing of Personal data
-                      </label>
-                    </div>
-                  </div>
-                  {errors.agreeToTerms && (
-                    <span className="text-red-500 text-sm">
-                      {errors.agreeToTerms.message}
-                    </span>
-                  )}
-                </div>
-
-                <Button
-                  type="submit"
-                  className="flex items-center justify-center gap-2.5 px-8 py-4 self-stretch w-full bg-[#00ae34] rounded-[100px] shadow-shadow-01 h-auto hover:bg-[#009c2e]"
-                >
-                  <span className="flex-1 font-medium text-white text-base text-center tracking-[0] leading-6">
-                    Sign Up
-                  </span>
-                </Button>
-              </div>
-
-              <div className="flex items-center justify-center gap-1 self-stretch w-full">
-                <p className="w-fit font-normal text-[#707070] text-sm text-right whitespace-nowrap">
-                  Already have an account?
-                </p>
-                <Link
-                  to="/"
-                  className="relative w-fit mt-[-1.00px] font-medium text-[#00ae34] text-sm whitespace-nowrap"
-                >
-                  Sign In
-                </Link>
-              </div>
-            </div>
-          </form>
-
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className='flex flex-col items-center p-6 border-b bg-gradient-to-b from-blue-50 to-white'
+        >
           <motion.img
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="absolute w-[200px] h-[200px] top-0 left-[88px] object-cover"
-            alt="Logo"
-            src="/logo.png"
+            className='w-36 h-36 object-cover'
+            alt='Logo'
+            src='/logo.png'
           />
-        </div>
-      </motion.div>
+          <h2 className='text-2xl font-bold mb-1'>Create Account</h2>
+          <p className='text-xs text-gray-500'>
+            Fill in your details to register
+          </p>
+        </motion.div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit(onSubmit)} className='p-6'>
+          <div className='space-y-6'>
+            {/* Name Field */}
+            <div className='flex flex-col gap-2'>
+              <label className='font-medium text-base'>Name</label>
+              <Card className='p-0 w-full border border-solid border-gray-200 shadow-none'>
+                <CardContent className='p-0'>
+                  <Input
+                    {...register("name")}
+                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                      errors.name ? "border-red-500" : ""
+                    }`}
+                    placeholder='Enter your name...'
+                  />
+                </CardContent>
+              </Card>
+              {errors.name && (
+                <span className='text-red-500 text-sm'>
+                  {errors.name.message}
+                </span>
+              )}
+            </div>
+
+            {/* Phone Field */}
+            <div className='flex flex-col gap-2'>
+              <label className='font-medium text-base'>Phone number</label>
+              <Card className='p-0 w-full border border-solid border-gray-200 shadow-none'>
+                <CardContent className='p-0'>
+                  <Input
+                    {...register("phone")}
+                    type='tel'
+                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                      errors.phone ? "border-red-500" : ""
+                    }`}
+                    placeholder='Enter your Phone number...'
+                  />
+                </CardContent>
+              </Card>
+              {errors.phone && (
+                <span className='text-red-500 text-sm'>
+                  {errors.phone.message}
+                </span>
+              )}
+            </div>
+
+            {/* Password Field */}
+            <div className='flex flex-col gap-2'>
+              <label className='font-medium text-base'>Password</label>
+              <Card className='p-0 w-full border border-solid border-gray-200 shadow-none'>
+                <CardContent className='p-0 flex items-center'>
+                  <Input
+                    {...register("password")}
+                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                      errors.password ? "border-red-500" : ""
+                    }`}
+                    placeholder='Enter your Password...'
+                    type={showPassword ? "text" : "password"}
+                  />
+                  <div
+                    className='absolute right-10 cursor-pointer'
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <EyeOffIcon className='w-5 h-5 text-gray-500' />
+                    ) : (
+                      <EyeIcon className='w-5 h-5 text-gray-500' />
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+              {errors.password && (
+                <span className='text-red-500 text-sm'>
+                  {errors.password.message}
+                </span>
+              )}
+            </div>
+
+            {/* Terms Checkbox */}
+            <div className='flex items-start gap-2'>
+              <Controller
+                name='agreeToTerms'
+                control={control}
+                render={({ field }) => (
+                  <Checkbox
+                    id='terms'
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    className={`mt-1 w-4 h-4 rounded border-2 ${
+                      errors.agreeToTerms ? "border-red-500" : "border-blue-500"
+                    }`}
+                  />
+                )}
+              />
+              <label
+                htmlFor='terms'
+                className='cursor-pointer text-sm text-gray-700'
+              >
+                I agree to the processing of personal data and accept the Terms
+                of Service & Privacy Policy
+              </label>
+            </div>
+            {errors.agreeToTerms && (
+              <span className='text-red-500 text-sm block mt-1'>
+                {errors.agreeToTerms.message}
+              </span>
+            )}
+
+            {/* Sign Up Button */}
+            <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
+              <Button
+                type='submit'
+                className='w-full py-3 bg-blue-500 rounded-full text-white font-medium hover:bg-blue-600 transition-colors'
+              >
+                Sign Up
+              </Button>
+            </motion.div>
+
+            {/* Already have an account */}
+            <div className='flex items-center justify-center gap-1 mt-6'>
+              <p className='text-gray-700 text-sm'>Already have an account?</p>
+              <Link to='/' className='font-medium text-blue-500 text-sm'>
+                Sign In
+              </Link>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -1,7 +1,10 @@
+
+// Modified SoundLibrary.jsx with Fixed Sidebar Animation
+
 import { useState, useRef, useEffect } from "react";
-import { Menu, User } from "lucide-react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { Menu, CircleUserRound } from "lucide-react";
+import { Link } from "react-router-dom"; 
+import { motion, AnimatePresence } from "framer-motion";
 import SideBar from "../../../components/common/SideBar";
 import SoundList from "../../../components/Sounds/SoundList";
 import { StatusBar } from "../../../components/common/StatusBar";
@@ -12,6 +15,7 @@ const SoundLibrary = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isSoundSelected, setIsSoundSelected] = useState(true);
   const [title, setTitle] = useState("Sound Library");
+  const [scrolled, setScrolled] = useState(false);
 
   // Refs for detecting clicks outside sidebar
   const sidebarRef = useRef(null);
@@ -35,6 +39,20 @@ const SoundLibrary = () => {
     }
   };
 
+  // Track scroll for shadow effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Add event listener for clicks
   useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
@@ -44,64 +62,92 @@ const SoundLibrary = () => {
   }, [sidebarOpen]);
 
   return (
-    <div className="bg-white flex flex-r justify-center h-screen w-full overflow-hidden">
-      {/* Sidebar */}
-      <motion.div
-        ref={sidebarRef}
-        initial={{ x: "-100%" }}
-        animate={{ x: sidebarOpen ? "-4rem" : "-70rem" }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed z-20 bg-gray-900 text-white w-64 h-full"
-      >
-        <SideBar
-          onTitleChange={setTitle}
-          onSoundListChange={setIsSoundSelected}
-        />
-      </motion.div>
-
-      {/* Main Content */}
+    <div className='bg-gray-50 flex flex-row justify-center w-full min-h-screen'>
       <div
+        className='bg-white w-full max-w-md relative shadow-md'
         ref={mainContentRef}
-        className="bg-white flex flex-row justify-center w-full"
       >
-        <div className="bg-white w-[375px] h-[812px] items-center relative">
-          <StatusBar />
+        <StatusBar />
 
-          {/* Header */}
-          <div className="flex items-center justify-between px-0 py-4 border-b border-gray-100">
-            <button className="p-0" onClick={toggleSidebar}>
-              <Menu className="w-6 h-6 text-black" />
-            </button>
-            <h1 className="text-xl font-medium text-center">{title}</h1>
-            <Link to="/profile" className="px-0 py-2">
-              <User className="w-6 h-6 text-black" />
-            </Link>
-          </div>
+        {/* Sidebar - FIXED ANIMATION HERE */}
+        <AnimatePresence>
+          {sidebarOpen && (
+            <motion.div
+              ref={sidebarRef}
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className='fixed top-0 z-40 bg-white w-56 h-full shadow-lg'
+            >
+              <SideBar
+                onTitleChange={setTitle}
+                onSoundListChange={setIsSoundSelected}
+                onClose={toggleSidebar}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-          {/* Render active section */}
-          <motion.div
-            key={isSoundSelected ? "sounds" : "friends"}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="h-[calc(100%-64px)]"
-          >
-            {isSoundSelected ? <SoundList /> : <Friends />}
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Overlay for mobile when sidebar is open */}
-      {sidebarOpen && (
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className={`flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10 transition-shadow ${
+            scrolled ? "shadow-md" : ""
+          }`}
+        >
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className='p-2 rounded-full hover:bg-gray-100 transition-colors'
+            onClick={toggleSidebar}
+          >
+            <Menu className='w-5 h-5' />
+          </motion.button>
+          <h1 className='text-xl font-bold'>{title}</h1>
+          <Link to='/profile'>
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className='p-2 rounded-full hover:bg-gray-100 transition-colors'
+            >
+              <CircleUserRound className='w-5 h-5' />
+            </motion.div>
+          </Link>
+        </motion.div>
+
+        {/* Content Area */}
+        <div className='h-[calc(100vh-56px)] overflow-hidden'>
+          <AnimatePresence mode='wait'>
+            <motion.div
+              key={isSoundSelected ? "sounds" : "friends"}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className='h-full overflow-y-auto p-4'
+            >
+              {isSoundSelected ? <SoundList /> : <Friends />}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Overlay for mobile when sidebar is open */}
+        <AnimatePresence>
+          {sidebarOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className='fixed inset-0  bg-opacity-60 z-30'
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

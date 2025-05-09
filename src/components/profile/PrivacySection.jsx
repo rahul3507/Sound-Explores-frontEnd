@@ -1,39 +1,45 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const PrivacySection = ({ item }) => {
-  const { id, title, desc } = item;
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="mb-4 border-b border-gray-100">
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full justify-between items-center py-4 px-4 text-left"
-      >
-        <h2 className="text-lg font-bold">{id}. {title}</h2>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <ChevronDown className="w-5 h-5 text-gray-500" />
-        </motion.div>
-      </button>
-      
+    <div className='border-b border-gray-100 py-4'>
       <motion.div
-        initial={{ height: 0, opacity: 0 }}
-        animate={{ 
-          height: isOpen ? 'auto' : 0,
-          opacity: isOpen ? 1 : 0
-        }}
-        transition={{ duration: 0.3 }}
-        className="overflow-hidden"
+        className='flex justify-between items-center cursor-pointer'
+        onClick={() => setIsOpen(!isOpen)}
       >
-        <p className="text-sm text-gray-700 leading-relaxed px-4 pb-4">
-          {desc}
-        </p>
+        <h3 className='text-lg font-medium'>{item.title}</h3>
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className='p-1 rounded-full hover:bg-gray-100'
+        >
+          {isOpen ? (
+            <ChevronUp className='w-5 h-5 text-gray-500' />
+          ) : (
+            <ChevronDown className='w-5 h-5 text-gray-500' />
+          )}
+        </motion.div>
       </motion.div>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className='overflow-hidden'
+          >
+            <p className='text-gray-600 text-sm mt-3 mb-1 leading-relaxed'>
+              {item.desc}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

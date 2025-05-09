@@ -1,110 +1,172 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { ArrowLeft } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '../../components/ui/button';
-import { Card, CardContent } from '../../components/ui/card';
-import { Input } from '../../components/ui/input';
-import { useAuth } from '../../contexts/AuthContext';
-import { motion } from 'framer-motion';
+// src\pages\auth\ForgetPassword.jsx
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { ArrowLeft } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+import { useAuth } from "../../contexts/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { StatusBar } from "../../components/common/StatusBar";
 
 // Validation schema
 const forgotPasswordSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
+  email: z.string().email("Please enter a valid email address"),
 });
 
 const ForgetPassword = () => {
   const { sendPasswordResetEmail } = useAuth();
   const navigate = useNavigate();
-  
+  const [loading, setLoading] = useState(false);
+
   // React Hook Form
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
-      email: '',
-    }
+      email: "",
+    },
   });
-  
+
   // Handle form submission
   const onSubmit = async (data) => {
-    const success = await sendPasswordResetEmail(data.email);
-    if (success) {
-      navigate('/send-code');
+    setLoading(true);
+    try {
+      const success = await sendPasswordResetEmail(data.email);
+      if (success) {
+        navigate("/send-code");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white flex flex-row justify-center w-full">
-      <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="bg-white w-[375px] h-[812px] relative"
-      >
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full items-start gap-6 px-5 py-10 absolute top-[254px] left-0 bg-white">
-          <Link to="/" className="flex items-center gap-2 text-gray-700">
-            <ArrowLeft className="w-5 h-5" />
-            <span className="font-medium">Back to Login</span>
-          </Link>
+    <div className='bg-gray-50 flex flex-row justify-center w-full min-h-screen'>
+      <div className='bg-white w-full max-w-md relative shadow-md'>
+        <StatusBar />
 
-          <h1 className="self-stretch mt-4 font-bold text-[#0b0b0b] text-[2rem] tracking-tight leading-tight">
-            Forgot Password?
-          </h1>
-          
-          <p className="text-gray-600 mb-4">
-            Enter your email address and we'll send you a code to reset your password.
-          </p>
-
-          <div className="flex-col items-start gap-8 self-stretch w-full flex-[0_0_auto] flex relative">
-            <div className="flex flex-col items-start gap-6 relative self-stretch w-full flex-[0_0_auto]">
-              <div className="flex flex-col items-start gap-3 relative self-stretch w-full flex-[0_0_auto]">
-                <div className="flex flex-col items-start gap-4 relative self-stretch w-full flex-[0_0_auto]">
-                  {/* Email Field */}
-                  <div className="flex flex-col items-start gap-2 relative self-stretch w-full flex-[0_0_auto]">
-                    <label className="relative self-stretch mt-[-1.00px] font-medium text-[#0b0b0b] text-base">
-                      Email
-                    </label>
-
-                    <Card className="p-0 w-full border border-solid border-[#e3ecf7] shadow-none">
-                      <CardContent className="p-0">
-                        <Input
-                          {...register('email')}
-                          className={`border-none px-4 py-3 h-auto text-[#707070] text-sm ${errors.email ? "border-red-500" : ""}`}
-                          placeholder="Enter your Email..."
-                        />
-                      </CardContent>
-                    </Card>
-                    {errors.email && (
-                      <span className="text-red-500 text-sm">{errors.email.message}</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Send Code Button */}
-              <Button
-                type="submit"
-                className="flex items-center justify-center gap-2.5 px-8 py-4 self-stretch w-full bg-[#00ae34] rounded-[100px] shadow-shadow-01 h-auto hover:bg-[#009c2e] mt-4"
+        {/* Header */}
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className='flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10'
+        >
+          <div className='flex items-center'>
+            <Link to='/'>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className='p-2 rounded-full hover:bg-gray-100 transition-colors'
               >
-                <span className="flex-1 font-medium text-white text-base text-center tracking-[0] leading-6">
-                  Send Code
-                </span>
-              </Button>
-            </div>
+                <ArrowLeft className='w-5 h-5' />
+              </motion.div>
+            </Link>
+            <h1 className='text-xl font-bold'>Forgot Password</h1>
           </div>
+        </motion.div>
+
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className='flex flex-col p-6 gap-6'
+        >
+          {/* Logo Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className='flex justify-center items-center'
+          >
+            <motion.img
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className='w-32 h-32 object-contain'
+              alt='Logo'
+              src='/logo.png'
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            className='space-y-6'
+          >
+            <div>
+              <h2 className='text-2xl font-bold mb-2'>Forgot Password?</h2>
+              <p className='text-gray-600 text-sm'>
+                Enter your email address and we'll send you a code to reset your
+                password.
+              </p>
+            </div>
+
+            {/* Email Field */}
+            <div className='space-y-2'>
+              <label className='text-sm font-medium text-gray-700'>Email</label>
+              <Card className='shadow-none border border-gray-200'>
+                <CardContent className='p-0'>
+                  <Input
+                    {...register("email")}
+                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                      errors.email
+                        ? "focus:ring-red-500"
+                        : "focus:ring-blue-500"
+                    }`}
+                    placeholder='Enter your email...'
+                  />
+                </CardContent>
+              </Card>
+              {errors.email && (
+                <motion.span
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className='text-red-500 text-xs block'
+                >
+                  {errors.email.message}
+                </motion.span>
+              )}
+            </div>
+
+            {/* Send Code Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
+            >
+              <Button
+                type='submit'
+                disabled={loading}
+                className='w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-full font-medium transition-colors'
+              >
+                {loading ? "Sending..." : "Send Code"}
+              </Button>
+            </motion.div>
+          </motion.div>
         </form>
 
-        <motion.img
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="absolute w-[200px] h-[200px] top-[54px] left-[94px] object-cover"
-          alt="Logo"
-          src="/poopcharacter-smile-1024p-1.png"
-        />
-      </motion.div>
+        {/* Back to Login Link */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className='p-6 text-center border-t'
+        >
+          <Link
+            to='/'
+            className='text-sm text-blue-600 hover:text-blue-800 font-medium'
+          >
+            Back to Login
+          </Link>
+        </motion.div>
+      </div>
     </div>
   );
 };

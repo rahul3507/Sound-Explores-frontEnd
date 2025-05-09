@@ -1,166 +1,252 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '../../components/ui/button';
-import { Card, CardContent } from '../../components/ui/card';
-import { Input } from '../../components/ui/input';
-import { useAuth } from '../../contexts/AuthContext';
-import { motion } from 'framer-motion';
+// src\pages\auth\ResetPassword.jsx
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+import { useAuth } from "../../contexts/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { StatusBar } from "../../components/common/StatusBar";
 
 // Validation schema
-const resetPasswordSchema = z.object({
-  newPassword: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string().min(6, 'Please confirm your password'),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
-});
+const resetPasswordSchema = z
+  .object({
+    newPassword: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(6, "Please confirm your password"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 const ResetPassword = () => {
   const { resetPassword } = useAuth();
   const navigate = useNavigate();
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+  const [loading, setLoading] = useState(false);
+
   // React Hook Form
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      newPassword: '',
-      confirmPassword: ''
-    }
+      newPassword: "",
+      confirmPassword: "",
+    },
   });
-  
+
   // Handle form submission
   const onSubmit = async (data) => {
-    const success = await resetPassword(data);
-    if (success) {
-      navigate('/signin');
+    setLoading(true);
+    try {
+      const success = await resetPassword(data);
+      if (success) {
+        navigate("/signin");
+      }
+    } finally {
+      setLoading(false);
     }
   };
-  
+
   // Toggle password visibility
   const toggleNewPasswordVisibility = () => {
     setShowNewPassword(!showNewPassword);
   };
-  
+
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
-    <div className="bg-white flex flex-row justify-center w-full">
-      <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="bg-white w-[375px] h-[812px] relative"
-      >
-        <form 
-          onSubmit={handleSubmit(onSubmit)} 
-          className="flex flex-col w-full items-start gap-6 px-5 py-10 absolute top-[80px] left-0 bg-white"
-        >
-          <Link to="/send-code" className="flex items-center gap-2 text-gray-700">
-            <ArrowLeft className="w-5 h-5" />
-            <span className="font-medium">Forget Password</span>
-          </Link>
+    <div className='bg-gray-50 flex flex-row justify-center w-full min-h-screen'>
+      <div className='bg-white w-full max-w-md relative shadow-md'>
+        <StatusBar />
 
-          <div className="flex-col items-center justify-center w-full">
+        {/* Header */}
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className='flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10'
+        >
+          <div className='flex items-center'>
+            <Link to='/send-code'>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className='p-2 rounded-full hover:bg-gray-100 transition-colors'
+              >
+                <ArrowLeft className='w-5 h-5' />
+              </motion.div>
+            </Link>
+            <h1 className='text-xl font-bold'>Reset Password</h1>
+          </div>
+        </motion.div>
+
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className='flex flex-col p-6 gap-6'
+        >
+          {/* Logo Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className='flex justify-center items-center'
+          >
             <motion.img
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="w-[200px] h-[200px] mx-auto mb-8 object-cover"
-              alt="Logo"
-              src="/poopcharacter-smile-1024p-1.png"
+              className='w-32 h-32 object-contain'
+              alt='Logo'
+              src='/logo.png'
             />
-          </div>
+          </motion.div>
 
-          <div className="flex-col justify-between items-start gap-2 self-stretch w-full flex-[0_0_auto]">
-            <p className="text-left w-full font-medium text-[#0b0b0b] text-xl mb-6">
-              Create Your New password
-            </p>
-            
-            <div className="flex flex-col items-start gap-6 relative self-stretch w-full flex-[0_0_auto]">
-              <div className="flex flex-col items-start gap-4 relative self-stretch w-full flex-[0_0_auto]">
-                {/* New Password Field */}
-                <div className="flex flex-col items-start gap-2 relative self-stretch w-full flex-[0_0_auto]">
-                  <label className="relative self-stretch mt-[-1.00px] font-medium text-[#0b0b0b] text-base">
-                    New Password
-                  </label>
-
-                  <Card className="p-0 w-full border border-solid border-[#e3ecf7] shadow-none">
-                    <CardContent className="p-0 flex items-center">
-                      <Input
-                        {...register('newPassword')}
-                        className={`border-none px-4 py-3 h-auto text-[#707070] text-sm ${errors.newPassword ? "border-red-500" : ""}`}
-                        placeholder="Enter New password!..."
-                        type={showNewPassword ? "text" : "password"}
-                      />
-                      <div 
-                        className="absolute right-4 cursor-pointer"
-                        onClick={toggleNewPasswordVisibility}
-                      >
-                        {showNewPassword ? (
-                          <EyeOff className="w-6 h-6 text-gray-500" />
-                        ) : (
-                          <Eye className="w-6 h-6 text-gray-500" />
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                  {errors.newPassword && (
-                    <span className="text-red-500 text-sm">{errors.newPassword.message}</span>
-                  )}
-                </div>
-
-                {/* Confirm Password Field */}
-                <div className="flex flex-col items-start gap-2 relative self-stretch w-full flex-[0_0_auto]">
-                  <label className="relative self-stretch mt-[-1.00px] font-medium text-[#0b0b0b] text-base">
-                    Re-Type Password
-                  </label>
-
-                  <Card className="p-0 w-full border border-solid border-[#e3ecf7] shadow-none">
-                    <CardContent className="p-0 flex items-center">
-                      <Input
-                        {...register('confirmPassword')}
-                        className={`border-none px-4 py-3 h-auto text-[#707070] text-sm ${errors.confirmPassword ? "border-red-500" : ""}`}
-                        placeholder="Enter re-type password!..."
-                        type={showConfirmPassword ? "text" : "password"}
-                      />
-                      <div 
-                        className="absolute right-4 cursor-pointer"
-                        onClick={toggleConfirmPasswordVisibility}
-                      >
-                        {showConfirmPassword ? (
-                          <EyeOff className="w-6 h-6 text-gray-500" />
-                        ) : (
-                          <Eye className="w-6 h-6 text-gray-500" />
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                  {errors.confirmPassword && (
-                    <span className="text-red-500 text-sm">{errors.confirmPassword.message}</span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Button 
-            type="submit"
-            className="flex items-center justify-center gap-2.5 px-8 py-2 self-stretch w-full bg-[#00ae34] rounded-[100px] shadow-shadow-01 h-auto hover:bg-[#009c2e] mt-4"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            className='space-y-6'
           >
-            <span className="flex-1 font-medium text-white text-base text-center tracking-[0] leading-6">
-              Continue
-            </span>
-          </Button>
+            <div>
+              <h2 className='text-2xl font-bold mb-2'>Create New Password</h2>
+              <p className='text-gray-600 text-sm'>
+                Please create a new secure password for your account.
+              </p>
+            </div>
+
+            {/* New Password Field */}
+            <div className='space-y-2'>
+              <label className='text-sm font-medium text-gray-700'>
+                New Password
+              </label>
+              <Card className='shadow-none border border-gray-200'>
+                <CardContent className='p-0 relative'>
+                  <Input
+                    {...register("newPassword")}
+                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                      errors.newPassword
+                        ? "focus:ring-red-500"
+                        : "focus:ring-blue-500"
+                    }`}
+                    placeholder='Enter new password...'
+                    type={showNewPassword ? "text" : "password"}
+                  />
+                  <div className='absolute right-3 top-1/2 transform -translate-y-1/2'>
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      type='button'
+                      onClick={toggleNewPasswordVisibility}
+                      className='text-gray-500 flex items-center justify-center'
+                    >
+                      {showNewPassword ? (
+                        <EyeOff className='w-5 h-5' />
+                      ) : (
+                        <Eye className='w-5 h-5' />
+                      )}
+                    </motion.button>
+                  </div>
+                </CardContent>
+              </Card>
+              {errors.newPassword && (
+                <motion.span
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className='text-red-500 text-xs block'
+                >
+                  {errors.newPassword.message}
+                </motion.span>
+              )}
+            </div>
+
+            {/* Confirm Password Field */}
+            <div className='space-y-2'>
+              <label className='text-sm font-medium text-gray-700'>
+                Confirm Password
+              </label>
+              <Card className='shadow-none border border-gray-200'>
+                <CardContent className='p-0 relative'>
+                  <Input
+                    {...register("confirmPassword")}
+                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                      errors.confirmPassword
+                        ? "focus:ring-red-500"
+                        : "focus:ring-blue-500"
+                    }`}
+                    placeholder='Confirm your password...'
+                    type={showConfirmPassword ? "text" : "password"}
+                  />
+                  <div className='absolute right-3 top-1/2 transform -translate-y-1/2'>
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      type='button'
+                      onClick={toggleNewPasswordVisibility}
+                      className='text-gray-500 flex items-center justify-center'
+                    >
+                      {showNewPassword ? (
+                        <EyeOff className='w-5 h-5' />
+                      ) : (
+                        <Eye className='w-5 h-5' />
+                      )}
+                    </motion.button>
+                  </div>
+                </CardContent>
+              </Card>
+              {errors.confirmPassword && (
+                <motion.span
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className='text-red-500 text-xs block'
+                >
+                  {errors.confirmPassword.message}
+                </motion.span>
+              )}
+            </div>
+
+            {/* Continue Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
+            >
+              <Button
+                type='submit'
+                disabled={loading}
+                className='w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-full font-medium transition-colors'
+              >
+                {loading ? "Processing..." : "Reset Password"}
+              </Button>
+            </motion.div>
+          </motion.div>
         </form>
-      </motion.div>
+
+        {/* Back Link */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className='p-6 text-center border-t'
+        >
+          <Link
+            to='/send-code'
+            className='text-sm text-blue-600 hover:text-blue-800 font-medium'
+          >
+            Back to verification
+          </Link>
+        </motion.div>
+      </div>
     </div>
   );
 };

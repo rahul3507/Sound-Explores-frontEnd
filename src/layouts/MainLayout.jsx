@@ -20,12 +20,10 @@ const MainLayout = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="min-h-screen bg-background"
+      className="min-h-screen bg-gray-50"
     >
       <main className="md:container mx-auto flex justify-center">
         <div className="w-full md:max-w-md">
-          {/* <StatusBar /> */}
-          {/* <NavBar /> */}
           <Outlet />
         </div>
       </main>
