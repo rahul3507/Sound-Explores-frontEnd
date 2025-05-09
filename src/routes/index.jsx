@@ -1,74 +1,72 @@
 // src\routes\index.jsx
-import { lazy } from "react";
-import MainLayout from "../layouts/main-layout";
-import AuthLayout from "../layouts/auth-layout";
-import DashboardLayout from "../layouts/dashboard-layout";
-import { ProtectedRoute, PublicRoute } from "./route-guards";
-import LoginPage from "@/pages/auth/login";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
+import PublicRoute from "../components/auth/PublicRoute";
+import LoadingScreen from "../components/ui/LoadingScreen";
+import MainLayout from "../layouts/MainLayout";
+import AuthLayout from "../layouts/AuthLayout";
 
-// Lazy load pages for better performance
-const HomePage = lazy(() => import("../pages/home"));
+// Lazy loaded components
+const SignIn = lazy(() => import("../pages/auth/SignIn"));
+const SignUp = lazy(() => import("../pages/auth/SignUp"));
+const SendOtp = lazy(() => import("../pages/auth/SendOtp"));
+const ResetPassword = lazy(() => import("../pages/auth/ResetPassword"));
+const ForgetPassword = lazy(() => import("../pages/auth/ForgetPassword"));
+const SoundLibrary = lazy(() =>
+  import("../pages/app/SoundLibrary/SoundLibrary")
+);
+const Friends = lazy(() => import("../pages/app/Friends/Friends"));
+const Profile = lazy(() => import("../pages/app/Profile/Profile"));
+const EditProfile = lazy(() => import("../pages/app/Profile/EditProfile"));
+const PrivacyPolicy = lazy(() => import("../pages/app/Profile/PrivacyPolicy"));
+const Payment = lazy(() => import("../pages/app/Profile/Payment"));
+const ChatInterface = lazy(() => import("../pages/app/Chat/ChatInterface"));
+const NotFound = lazy(() => import("../pages/errors/NotFound"));
 
+const AppRoutes = () => {
+  const location = useLocation();
 
-// Define all application routes
-const routes = [
-  {
-    // Public routes with MainLayout
-    element: <MainLayout />,
-    children: [
-      { path: "/", element: <HomePage /> },
-      { path: "/about", element: <AboutPage /> },
-      { path: "/contact", element: <ContactPage /> },
-    ],
-  },
-  {
-    // Auth routes with AuthLayout
-    element: <AuthLayout />,
-    children: [
-      {
-        path: "/login",
-        element: (
-          <PublicRoute>
-            <LoginPage />
-          </PublicRoute>
-        ),
-      },
-      {
-        path: "/register",
-        element: (
-          <PublicRoute>
-            <RegisterPage />
-          </PublicRoute>
-        ),
-      },
-      { path: "/forgot-password", element: <ForgotPasswordPage /> },
-      { path: "/reset-password", element: <ResetPasswordPage /> },
-      { path: "/verify-otp", element: <VerifyOtpPage /> },
-    ],
-  },
-  {
-    // Protected dashboard routes with DashboardLayout
-    element: (
-      <ProtectedRoute>
-        <DashboardLayout />
-      </ProtectedRoute>
-    ),
-    children: [
-      { path: "/dashboard", element: <DashboardPage /> },
-      { path: "/profile", element: <ProfilePage /> },
-      { path: "/settings", element: <SettingsPage /> },
-      { path: "/edit-profile", element: <EditProfilePage /> },
-      { path: "/sound-library", element: <SoundLibraryPage /> },
-      { path: "/friends", element: <FriendsPage /> },
-      { path: "/messages", element: <MessagesPage /> },
-      { path: "/analytics", element: <AnalyticsPage /> },
-    ],
-  },
-  {
-    // 404 page
-    path: "*",
-    element: <NotFoundPage />,
-  },
-];
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
-export default routes;
+  return (
+    <AnimatePresence mode='wait'>
+      <Suspense fallback={<LoadingScreen />}>
+        <Routes location={location} key={location.pathname}>
+          {/* Auth Routes */}
+          <Route element={<PublicRoute />}>
+            <Route element={<AuthLayout />}>
+              <Route path='/' element={<SignIn />} />
+              <Route path='/signin' element={<SignIn />} />
+              <Route path='/signup' element={<SignUp />} />
+              <Route path='/forget-password' element={<ForgetPassword />} />
+              <Route path='/send-code' element={<SendOtp />} />
+              <Route path='/reset-password' element={<ResetPassword />} />
+              <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+            </Route>
+          </Route>
+
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<MainLayout />}>
+              <Route path='/sound-library' element={<SoundLibrary />} />
+              <Route path='/friends' element={<Friends />} />
+              <Route path='/profile' element={<Profile />} />
+              <Route path='/edit-profile' element={<EditProfile />} />
+              <Route path='/payment' element={<Payment />} />
+              <Route path='/chat-interface' element={<ChatInterface />} />
+            </Route>
+          </Route>
+
+          {/* 404 Route */}
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+      </Suspense>
+    </AnimatePresence>
+  );
+};
+
+export default AppRoutes;
