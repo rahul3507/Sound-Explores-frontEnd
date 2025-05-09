@@ -12,6 +12,7 @@ import { StatusBar } from "../../../components/common/StatusBar";
 import { useAuth } from "../../../contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "../../../components/common/Header";
+import { Helmet } from "react-helmet-async";
 
 const Profile = () => {
   const { user, signOut } = useAuth();
@@ -50,6 +51,34 @@ const Profile = () => {
   return (
     <div className='bg-background flex flex-row justify-center w-full min-h-screen'>
       <div className='bg-card w-full max-w-md relative shadow-md'>
+        <Helmet>
+          <title>
+            {user?.name ? `${user.name}'s Profile` : "Profile"} - Sound Explores
+            App
+          </title>
+          <meta
+            name='description'
+            content={`View ${user?.name || "user"}'s profile on Sound Explores`}
+          />
+          <meta name='robots' content='noindex, nofollow' />
+          <meta
+            property='og:title'
+            content={`${user?.name || "User"}'s Profile - Sound Explores App`}
+          />
+          <meta
+            property='og:description'
+            content={`View ${user?.name || "user"}'s profile on Sound Explores`}
+          />
+          <meta
+            property='og:image'
+            content={user?.avatar || "https://example.com/default-og-image.jpg"}
+          />
+          <meta
+            property='og:url'
+            content={`https://example.com/profile/${user?.id || ""}`}
+          />
+          <meta property='og:type' content='profile' />
+        </Helmet>
         <StatusBar />
 
         {/* Header */}

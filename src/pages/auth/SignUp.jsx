@@ -10,8 +10,9 @@ import { Card, CardContent } from "../../components/ui/card";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Input } from "../../components/ui/input";
 import { useAuth } from "../../contexts/AuthContext";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { StatusBar } from "../../components/common/StatusBar";
+import { Helmet } from "react-helmet-async";
 
 // Validation schema
 const signUpSchema = z.object({
@@ -62,6 +63,24 @@ const SignUp = () => {
   return (
     <div className='bg-background flex flex-row justify-center w-full min-h-screen'>
       <div className='bg-card w-full max-w-md relative shadow-md'>
+        <Helmet>
+          <title>Sign Up - Sound Explores App</title>
+          <meta
+            name='description'
+            content='Create a new Sound Explores account'
+          />
+          <meta property='og:title' content='Sign Up - Sound Explores App' />
+          <meta
+            property='og:description'
+            content='Create a new Sound Explores account'
+          />
+          <meta
+            property='og:image'
+            content='https://example.com/og-image-signup.jpg'
+          />
+          <meta property='og:url' content='https://example.com/signup' />
+          <meta property='og:type' content='website' />
+        </Helmet>
         <StatusBar />
 
         {/* Header */}
