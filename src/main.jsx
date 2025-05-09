@@ -19,28 +19,30 @@ const queryClient = new QueryClient({
   },
 });
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <AuthProvider>
             <Toaster
-              position="top-center"
+              position='top-center'
               toastOptions={{
                 duration: 3000,
                 style: {
-                  background: '#fff',
-                  color: '#333',
+                  background: "#fff",
+                  color: "#333",
                 },
                 success: {
                   style: {
-                    border: '1px solid #00AE34',
+                    border: "1px solid #00AE34",
                   },
                 },
                 error: {
                   style: {
-                    border: '1px solid #ff4b4b',
+                    border: "1px solid #ff4b4b",
                   },
                 },
               }}
