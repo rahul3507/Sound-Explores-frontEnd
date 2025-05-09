@@ -85,7 +85,7 @@ const Friends = () => {
       </div>
 
       {/* Search Bar */}
-      <div className='relative mb-4'>
+      <div className='relative mb-4 text-black'>
         <input
           type='text'
           placeholder={

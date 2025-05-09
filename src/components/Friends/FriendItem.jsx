@@ -100,7 +100,7 @@ export const FriendItem = ({ friend, onRemove }) => {
           transition: "transform 0.3s ease-out",
         }}
       >
-        <div className='flex items-center'>
+        <div className='flex items-center ml-1'>
           <img
             src={friend.image || "/api/placeholder/48/48"}
             alt={friend.name}

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 
 export const StatusBar = () => {
   const [timeString, setTimeString] = useState(
@@ -8,221 +7,242 @@ export const StatusBar = () => {
       minute: "2-digit",
     })
   );
-  const [batteryLevel, setBatteryLevel] = useState(null); // Battery level (0-100) or null if unavailable
-  const [isCharging, setIsCharging] = useState(false); // Charging status
-  const [networkStatus, setNetworkStatus] = useState("unknown"); // Network type (wifi, cellular, none, unknown)
+  const [batteryLevel, setBatteryLevel] = useState(75); // Default fallback value
+  const [isCharging, setIsCharging] = useState(false);
+  const [networkStatus, setNetworkStatus] = useState("wifi"); // Default to wifi for demo
 
   // Update time every minute
   useEffect(() => {
-    const interval = setInterval(() => {
+    const updateTime = () => {
       const now = new Date();
       setTimeString(
         now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
       );
-    }, 60 * 1000);
-
-    const immediate = setTimeout(() => {
-      const now = new Date();
-      setTimeString(
-        now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
-      );
-    }, 0);
-
-    return () => {
-      clearInterval(interval);
-      clearTimeout(immediate);
     };
+
+    updateTime(); // Initial call
+    const interval = setInterval(updateTime, 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   // Battery Status API
   useEffect(() => {
-    if ("getBattery" in navigator) {
-      navigator.getBattery().then((battery) => {
-        setBatteryLevel(Math.round(battery.level * 100));
-        setIsCharging(battery.charging);
+    const getBatteryInfo = async () => {
+      try {
+        if ("getBattery" in navigator) {
+          const battery = await navigator.getBattery();
 
-        battery.addEventListener("levelchange", () => {
+          // Update initial values
           setBatteryLevel(Math.round(battery.level * 100));
-        });
-        battery.addEventListener("chargingchange", () => {
           setIsCharging(battery.charging);
-        });
-      });
-    } else {
-      setBatteryLevel(null); // Explicit fallback for unsupported API
-    }
+
+          // Listen for changes
+          const handleLevelChange = () =>
+            setBatteryLevel(Math.round(battery.level * 100));
+          const handleChargingChange = () => setIsCharging(battery.charging);
+
+          battery.addEventListener("levelchange", handleLevelChange);
+          battery.addEventListener("chargingchange", handleChargingChange);
+
+          return () => {
+            battery.removeEventListener("levelchange", handleLevelChange);
+            battery.removeEventListener("chargingchange", handleChargingChange);
+          };
+        }
+      } catch (error) {
+        console.log("Battery API not available:", error);
+      }
+    };
+
+    getBatteryInfo();
   }, []);
 
-  // Network Status API
+  // Network Status API - Enhanced implementation
   useEffect(() => {
     const updateNetworkStatus = () => {
+      // First try the modern Network Information API
       const connection =
         navigator.connection ||
         navigator.mozConnection ||
         navigator.webkitConnection;
+
       if (connection) {
-        setNetworkStatus(connection.type || "unknown");
+        // Map connection types to our simplified categories
+        const type = connection.type;
+        if (type === "wifi") {
+          setNetworkStatus("wifi");
+        } else if (["cellular", "2g", "3g", "4g", "5g"].includes(type)) {
+          setNetworkStatus("cellular");
+        } else if (type === "none") {
+          setNetworkStatus("none");
+        } else {
+          // Fallback detection method using navigator.onLine
+          setNetworkStatus(navigator.onLine ? "wifi" : "none");
+        }
       } else {
-        setNetworkStatus("unknown");
+        // If Connection API not available, use navigator.onLine as fallback
+        setNetworkStatus(navigator.onLine ? "wifi" : "none");
       }
     };
 
+    // Initial status update
     updateNetworkStatus();
 
-    if (navigator.connection) {
-      navigator.connection.addEventListener("change", updateNetworkStatus);
-      return () =>
-        navigator.connection.removeEventListener("change", updateNetworkStatus);
-    }
-  }, []);
+    // Listen for online/offline events as a reliable fallback
+    window.addEventListener("online", () => setNetworkStatus("wifi"));
+    window.addEventListener("offline", () => setNetworkStatus("none"));
 
-  // Animation variants for icons
-  const iconVariants = {
-    initial: { scale: 1, y: 0 },
-    hover: { scale: 1.2, y: -2, transition: { duration: 0.2 } },
-  };
+    // Listen for connection changes if API is available
+    const connection =
+      navigator.connection ||
+      navigator.mozConnection ||
+      navigator.webkitConnection;
+
+    if (connection) {
+      connection.addEventListener("change", updateNetworkStatus);
+    }
+
+    return () => {
+      window.removeEventListener("online", () => setNetworkStatus("wifi"));
+      window.removeEventListener("offline", () => setNetworkStatus("none"));
+
+      if (connection) {
+        connection.removeEventListener("change", updateNetworkStatus);
+      }
+    };
+  }, []);
 
   // Battery icon with accessibility
   const getBatteryIcon = () => {
-    if (batteryLevel === null) {
-      return (
-        <svg
-          width='16'
-          height='16'
-          viewBox='0 0 24 24'
-          fill='none'
-          stroke='currentColor'
-          strokeWidth='2'
-          aria-label='Battery status unavailable'
-        >
-          <rect x='2' y='7' width='16' height='10' rx='2' ry='2' />
-          <path d='M20 10v4' />
-        </svg>
-      );
-    }
-
     const fillColor =
       batteryLevel <= 20
-        ? "text-red-400"
+        ? "text-red-500"
         : batteryLevel <= 50
-        ? "text-orange-400"
-        : "text-green-400";
+        ? "text-orange-500"
+        : "text-green-500";
+
     const fillWidth = Math.round((batteryLevel / 100) * 12);
 
     return (
-      <svg
-        width='16'
-        height='16'
-        viewBox='0 0 24 24'
-        fill='none'
-        stroke='currentColor'
-        strokeWidth='2'
+      <div
+        className='relative flex items-center'
         aria-label={`Battery at ${batteryLevel}%${
           isCharging ? ", charging" : ""
         }`}
       >
-        <rect x='2' y='7' width='16' height='10' rx='2' ry='2' />
-        <path d='M20 10v4' />
-        <rect
-          x='4'
-          y='9'
-          width={fillWidth}
-          height='6'
-          fill='currentColor'
-          className={fillColor}
-        />
-        {isCharging && (
-          <path
-            d='M22 10l-2-2 2-2'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='2'
+        <svg
+          width='16'
+          height='16'
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          className='text-white'
+        >
+          <rect x='2' y='7' width='16' height='10' rx='2' ry='2' />
+          <path d='M20 10v4' />
+          {/* Battery fill */}
+          <rect
+            x='4'
+            y='9'
+            width={fillWidth}
+            height='6'
+            className={fillColor}
+            fill='currentColor'
           />
-        )}
-      </svg>
+          {/* Charging indicator */}
+          {isCharging && (
+            <path
+              d='M7 12 h6 m-3 -3 v6'
+              stroke='white'
+              strokeWidth='1'
+              className='animate-pulse'
+            />
+          )}
+        </svg>
+        <span className='ml-1 text-xs'>{batteryLevel}%</span>
+      </div>
     );
   };
 
-  // Network icon with accessibility
+  // Network icon with accessibility - FIXED IMPLEMENTATION
   const getNetworkIcon = () => {
     if (networkStatus === "wifi") {
       return (
-        <svg
-          width='16'
-          height='16'
-          viewBox='0 0 24 24'
-          fill='none'
-          stroke='currentColor'
-          strokeWidth='2'
-          aria-label='Wi-Fi connected'
-        >
-          <path d='M5 12.55a11 11 0 0 1 14.08 0' />
-          <path d='M1.42 9a16 16 0 0 1 21.16 0' />
-          <path d='M8.53 16.11a6 6 0 0 1 6.95 0' />
-          <circle cx='12' cy='20' r='1' />
-        </svg>
+        <div className='flex items-center' aria-label='Wi-Fi connected'>
+          <svg
+            width='18'
+            height='18'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+            className='text-white'
+          >
+            {/* WiFi waves, from outer to inner */}
+            <path d='M1.42 9a16 16 0 0 1 21.16 0' />
+            <path d='M5 12.55a11 11 0 0 1 14.08 0' />
+            <path d='M8.53 16.11a6 6 0 0 1 6.95 0' />
+            <circle cx='12' cy='20' r='1' fill='currentColor' />
+          </svg>
+        </div>
       );
     } else if (networkStatus === "cellular") {
       return (
-        <svg
-          width='16'
-          height='16'
-          viewBox='0 0 24 24'
-          fill='none'
-          stroke='currentColor'
-          strokeWidth='2'
+        <div
+          className='flex items-center'
           aria-label='Cellular network connected'
         >
-          <rect x='2' y='20' width='4' height='4' />
-          <rect x='8' y='16' width='4' height='8' />
-          <rect x='14' y='12' width='4' height='12' />
-          <rect x='20' y='8' width='4' height='16' />
-        </svg>
+          <svg
+            width='16'
+            height='16'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+            className='text-white'
+          >
+            <rect x='2' y='20' width='4' height='4' />
+            <rect x='8' y='16' width='4' height='8' />
+            <rect x='14' y='12' width='4' height='12' />
+            <rect x='20' y='8' width='4' height='16' />
+          </svg>
+        </div>
       );
     } else {
       return (
-        <svg
-          width='16'
-          height='16'
-          viewBox='0 0 24 24'
-          fill='none'
-          stroke='currentColor'
-          strokeWidth='2'
-          aria-label='No network connection'
-        >
-          <path d='M2 2l20 20' />
-          <rect x='2' y='20' width='4' height='4' />
-          <rect x='8' y='16' width='4' height='8' />
-          <rect x='14' y='12' width='4' height='12' />
-          <rect x='20' y='8' width='4' height='16' />
-        </svg>
+        <div className='flex items-center' aria-label='No network connection'>
+          <svg
+            width='18'
+            height='18'
+            viewBox='0 0 24 24'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+            className='text-white'
+          >
+            <path d='M1.42 9a16 16 0 0 1 21.16 0' />
+            <path d='M5 12.55a11 11 0 0 1 14.08 0' />
+            <path d='M8.53 16.11a6 6 0 0 1 6.95 0' />
+            <circle cx='12' cy='20' r='1' fill='currentColor' />
+            {/* Red diagonal line indicating disconnection */}
+            <line x1='1' y1='1' x2='23' y2='23' stroke='red' strokeWidth='2' />
+          </svg>
+        </div>
       );
     }
   };
 
   return (
-    <div className='h-8 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white text-xs flex justify-between  items-center px-2 md:px-4 shadow-lg backdrop-blur-md bg-opacity-80 rounded-b-lg'>
+    <div className='h-8 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white flex justify-between items-center px-4 shadow-lg rounded-b-lg'>
       <span className='font-semibold text-sm tracking-wide'>{timeString}</span>
-      <div className='flex space-x-3 justify-center items-center'>
-        <motion.div
-          variants={iconVariants}
-          initial='initial'
-          whileHover='hover'
-          className='flex justify-center items-center'
-        >
+      <div className='flex space-x-4 items-center'>
+        <div className='hover:scale-110 transition-transform duration-200'>
           {getNetworkIcon()}
-        </motion.div>
-        <motion.div
-          variants={iconVariants}
-          initial='initial'
-          whileHover='hover'
-          className='flex items-center space-x-1'
-        >
+        </div>
+        <div className='hover:scale-110 transition-transform duration-200'>
           {getBatteryIcon()}
-          {batteryLevel !== null && (
-            <span className='text-xs'>{batteryLevel}%</span>
-          )}
-        </motion.div>
+        </div>
       </div>
     </div>
   );

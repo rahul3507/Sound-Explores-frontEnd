@@ -88,25 +88,29 @@ const SignUp = () => {
         </motion.div>
 
         {/* Logo */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className='flex flex-col items-center p-6 border-b bg-gradient-to-b from-blue-50 to-white'
-        >
-          <motion.img
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className='w-36 h-36 object-cover'
-            alt='Logo'
-            src='/logo.png'
-          />
-          <h2 className='text-2xl font-bold mb-1'>Create Account</h2>
-          <p className='text-xs text-muted-foreground'>
-            Fill in your details to register
-          </p>
-        </motion.div>
+        <div className='mr-0.5'>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className='flex flex-col items-center p-6 border-b bg-gradient-to-b from-blue-50 to-white'
+          >
+            <motion.img
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className='w-36 h-36 object-cover'
+              alt='Logo'
+              src='/logo.png'
+            />
+            <h2 className='text-2xl text-black font-bold mb-1'>
+              Create Account
+            </h2>
+            <p className='text-xs text-muted-foreground'>
+              Fill in your details to register
+            </p>
+          </motion.div>
+        </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className='p-6'>
@@ -206,8 +210,13 @@ const SignUp = () => {
                 htmlFor='terms'
                 className='cursor-pointer text-sm text-foreground'
               >
-                I agree to the processing of personal data and accept the Terms
-                of Service & Privacy Policy
+                I agree to the processing of personal data and accept the{" "}
+                <Link
+                  to='/privacy-policy'
+                  className='text-primary hover:underline'
+                >
+                  Terms of Service & Privacy Policy
+                </Link>
               </label>
             </div>
             {errors.agreeToTerms && (

@@ -2,19 +2,46 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
+import { X } from "lucide-react";
 
 const FindFriends = ({ friends, setFriends }) => {
   const [pendingFriends, setPendingFriends] = useState([]);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [friendToRemove, setFriendToRemove] = useState(null);
 
-  const handleDeleteFriend = (friendId) => {
+  // Handle initiating friend removal
+  const handleInitiateDelete = (friendId) => {
+    // Find the friend to remove and set it in state
+    const friend = friends.find((friend) => friend.id === friendId);
+    setFriendToRemove(friend);
+    setIsConfirmModalOpen(true);
+  };
+
+  // Handle confirm friend removal
+  const handleConfirmDelete = () => {
+    if (!friendToRemove) return;
+
     // Remove from suggestion list
-    const updatedFriends = friends.filter((friend) => friend.id !== friendId);
+    const updatedFriends = friends.filter(
+      (friend) => friend.id !== friendToRemove.id
+    );
 
     // Here you would make an API call to remove the suggestion
 
     // Update UI
     setFriends(updatedFriends);
+
+    // Close modal and reset state
+    setIsConfirmModalOpen(false);
+    setFriendToRemove(null);
+
     toast.success("Friend removed from suggestions");
+  };
+
+  // Handle cancel friend removal
+  const handleCancelDelete = () => {
+    setIsConfirmModalOpen(false);
+    setFriendToRemove(null);
   };
 
   const handleAddFriend = (friend) => {
@@ -78,17 +105,21 @@ const FindFriends = ({ friends, setFriends }) => {
                   } transition-colors`}
                   onClick={() => handleAddFriend(friend)}
                 >
-                  {pendingFriends.includes(friend.id) ? "Pending" : "Add"}
+                  {pendingFriends.includes(friend.id)
+                    ? "Pending"
+                    : "Add Friend"}
                 </motion.button>
 
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className='px-3 py-1.5 bg-gray-100 rounded-md text-sm font-medium text-foreground hover:bg-gray-200 transition-colors'
-                  onClick={() => handleDeleteFriend(friend.id)}
-                >
-                  Remove
-                </motion.button>
+                <div className='flex items-center text-white'>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className='px-3 py-1.5 bg-destructive rounded-md text-sm font-medium hover:bg-red-600 transition-colors'
+                    onClick={() => handleInitiateDelete(friend.id)}
+                  >
+                    Remove
+                  </motion.button>
+                </div>
               </div>
             </motion.div>
           ))
@@ -120,6 +151,66 @@ const FindFriends = ({ friends, setFriends }) => {
             <p className='text-muted-foreground text-sm mt-1'>
               Check back later for new suggestions
             </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Confirmation Modal */}
+      <AnimatePresence>
+        {isConfirmModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'
+            onClick={handleCancelDelete}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className='bg-white rounded-lg p-5 w-80 mx-4 shadow-lg'
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className='flex justify-between items-center mb-4'>
+                <h3 className='text-lg text-black font-medium'>
+                  Remove Suggestion
+                </h3>
+                <button
+                  onClick={handleCancelDelete}
+                  className='text-gray-500 hover:text-gray-700'
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className='mb-6'>
+                <p className='text-gray-600'>
+                  Are you sure you want to remove{" "}
+                  <span className='font-medium'>{friendToRemove?.name}</span>{" "}
+                  from your suggestions?
+                </p>
+              </div>
+
+              <div className='flex justify-end gap-3'>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className='px-4 py-2 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors'
+                  onClick={handleCancelDelete}
+                >
+                  Cancel
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className='px-4 py-2 rounded-md text-sm font-medium bg-destructive text-white hover:bg-red-600 transition-colors'
+                  onClick={handleConfirmDelete}
+                >
+                  Remove
+                </motion.button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

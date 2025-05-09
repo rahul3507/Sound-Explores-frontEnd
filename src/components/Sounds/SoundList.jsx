@@ -185,7 +185,7 @@ const SoundList = () => {
       className='flex flex-col h-full'
     >
       {/* Search Bar */}
-      <div className='relative mb-4'>
+      <div className='relative mb-4 text-black'>
         <input
           type='text'
           placeholder='Search sounds'
@@ -210,9 +210,9 @@ const SoundList = () => {
                   transition={{ duration: 0.2 }}
                   className={`flex items-center p-3 rounded-lg ${
                     sound.selected
-                      ? "border border-blue-200"
+                      ? "border bg-blue-50 text-black border-blue-200"
                       : ""
-                  } hover:bg-background border-blue-100 transition-colors`}
+                  } hover:bg-gray-50 hover:text-black transition-colors`}
                 >
                   <div
                     className='flex items-center cursor-pointer'

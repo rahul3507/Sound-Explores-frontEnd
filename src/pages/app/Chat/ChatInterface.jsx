@@ -67,7 +67,7 @@ const ChatInterface = () => {
   };
 
   return (
-    <div className='flex flex-col h-screen bg-gray-100 w-full mx-auto relative overflow-hidden'>
+    <div className='flex flex-col h-screen bg-background w-full mx-auto relative overflow-hidden'>
       {/* Status bar */}
       <StatusBar />
 
@@ -76,7 +76,7 @@ const ChatInterface = () => {
         to='/sound-library'
         className='bg-card p-3 flex items-center border-b border-gray-200'
       >
-        <ArrowLeft size={24} className='text-gray-800' />
+        <ArrowLeft size={24} className='text-foreground' />
         <div className='ml-4 font-medium text-lg'>Jane Cooper</div>
       </Link>
 
