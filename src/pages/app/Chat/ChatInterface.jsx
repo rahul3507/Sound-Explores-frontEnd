@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { ArrowLeft, Mic, Send } from "lucide-react";
 import { Link } from "react-router-dom";
-import { StatusBar } from "../../components/common/StatusBar";
 import { motion } from "framer-motion";
+import { StatusBar } from "../../../components/common/StatusBar";
 
 const ChatInterface = () => {
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);

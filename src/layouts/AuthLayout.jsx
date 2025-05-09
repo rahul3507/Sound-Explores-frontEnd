@@ -1,3 +1,4 @@
+// src\layouts\AuthLayout.jsx
 import { Outlet, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
