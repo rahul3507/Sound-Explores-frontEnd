@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ChevronLeft, MoreVertical } from "lucide-react";
 import { Link } from "react-router-dom";
 import { StatusBar } from "../../../components/common/StatusBar";
@@ -29,29 +30,44 @@ const PrivacyPolicy = () => {
   ];
 
   return (
-    <div className="bg-white flex flex-row justify-center w-full">
-      <div className="bg-white w-[375px] h-full relative">
+    <div className="bg-gray-50 flex flex-row justify-center w-full min-h-screen">
+      <div className="bg-white w-full max-w-md relative shadow-md">
         <StatusBar />
 
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10"
+        >
           <div className="flex items-center">
-            <Link to="/profile" className="mr-2">
-              <ChevronLeft className="w-6 h-6" />
+            <Link to="/profile">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </motion.div>
             </Link>
-            <h1 className="text-2xl font-bold">Privacy Policy</h1>
+            <h1 className="text-xl font-bold">Privacy Policy</h1>
           </div>
-          <button>
-            <MoreVertical className="w-6 h-6" />
-          </button>
-        </div>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            <MoreVertical className="w-5 h-5" />
+          </motion.button>
+        </motion.div>
 
         {/* Privacy Policy Sections */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="pb-16"
+          className="px-4 py-4 pb-16"
         >
           {privacyItems.map((item, index) => (
             <motion.div

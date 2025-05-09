@@ -50,10 +50,12 @@ const SoundList = () => {
 
   const [filteredSounds, setFilteredSounds] = useState(sounds);
 
-  // Toggle sound selection
+  // Toggle sound selection (radio button behavior)
   const toggleSelect = (id) => {
     const updatedSounds = sounds.map((sound) =>
-      sound.id === id ? { ...sound, selected: !sound.selected } : sound
+      sound.id === id
+        ? { ...sound, selected: true }
+        : { ...sound, selected: false }
     );
     setSounds(updatedSounds);
     setFilteredSounds(
@@ -63,27 +65,28 @@ const SoundList = () => {
     );
 
     const selectedSound = updatedSounds.find((s) => s.id === id);
+    console.log(`Sound ${id} (${selectedSound.name}) selected`);
     console.log(
-      `Sound ${id} (${selectedSound.name}) ${
-        selectedSound.selected ? "selected" : "unselected"
-      }`
-    );
-    console.log(
-      "Currently selected sounds:",
+      "Currently selected sound:",
       updatedSounds.filter((s) => s.selected).map((s) => s.id)
     );
   };
 
-  // Play/pause sound function
+  // Play/pause sound function (only one at a time)
   const togglePlaySound = (id) => {
-    setSounds(
-      sounds.map((sound) =>
-        sound.id === id ? { ...sound, isPlaying: !sound.isPlaying } : sound
-      )
+    // Stop any currently playing sound and play the new one
+    const updatedSounds = sounds.map((sound) =>
+      sound.id === id
+        ? { ...sound, isPlaying: !sound.isPlaying }
+        : { ...sound, isPlaying: false }
     );
+
+    setSounds(updatedSounds);
     setFilteredSounds(
       filteredSounds.map((sound) =>
-        sound.id === id ? { ...sound, isPlaying: !sound.isPlaying } : sound
+        sound.id === id
+          ? { ...sound, isPlaying: !sound.isPlaying }
+          : { ...sound, isPlaying: false }
       )
     );
 
@@ -95,13 +98,15 @@ const SoundList = () => {
     );
   };
 
-  // Send to friend function
+  // Send to friend function (only selected sound)
   const sendToFriend = () => {
-    const selectedSounds = sounds.filter((sound) => sound.selected);
-    console.log(
-      "Sending sounds to friend:",
-      selectedSounds.map((s) => ({ id: s.id, name: s.name }))
-    );
+    const selectedSound = sounds.find((sound) => sound.selected);
+    if (selectedSound) {
+      console.log("Sending sound to friend:", {
+        id: selectedSound.id,
+        name: selectedSound.name,
+      });
+    }
   };
 
   // Handle search
@@ -214,11 +219,13 @@ const SoundList = () => {
       {/* Sound List */}
       <div className="flex-1 overflow-auto">
         {filteredSounds.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-2">
             {filteredSounds.map((sound) => (
               <div
                 key={sound.id}
-                className="flex items-center p-2 rounded-lg hover:bg-gray-50"
+                className={`flex items-center p-2 rounded-lg ${
+                  sound.selected ? "bg-green-50 border border-green-200" : ""
+                } hover:bg-gray-100`}
               >
                 <div
                   className="flex items-center cursor-pointer"
