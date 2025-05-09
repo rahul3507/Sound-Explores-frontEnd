@@ -1,9 +1,8 @@
-
 // Modified SoundLibrary.jsx with Fixed Sidebar Animation
 
 import { useState, useRef, useEffect } from "react";
 import { Menu, CircleUserRound } from "lucide-react";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import SideBar from "../../../components/common/SideBar";
 import SoundList from "../../../components/Sounds/SoundList";
@@ -62,9 +61,9 @@ const SoundLibrary = () => {
   }, [sidebarOpen]);
 
   return (
-    <div className='bg-gray-50 flex flex-row justify-center w-full min-h-screen'>
+    <div className='bg-background flex flex-row justify-center w-full min-h-screen'>
       <div
-        className='bg-white w-full max-w-md relative shadow-md'
+        className='bg-card w-full max-w-md relative shadow-md'
         ref={mainContentRef}
       >
         <StatusBar />
@@ -78,7 +77,7 @@ const SoundLibrary = () => {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className='fixed top-0 z-40 bg-white w-56 h-full shadow-lg'
+              className='fixed top-0 z-40 bg-card w-56 h-full shadow-lg'
             >
               <SideBar
                 onTitleChange={setTitle}
@@ -94,14 +93,14 @@ const SoundLibrary = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className={`flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10 transition-shadow ${
+          className={`flex items-center justify-between p-4 border-b bg-card sticky top-0 z-10 w-full transition-shadow ${
             scrolled ? "shadow-md" : ""
           }`}
         >
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className='p-2 rounded-full hover:bg-gray-100 transition-colors'
+            className='p-2 rounded-full hover:bg-background transition-colors'
             onClick={toggleSidebar}
           >
             <Menu className='w-5 h-5' />
@@ -111,7 +110,7 @@ const SoundLibrary = () => {
             <motion.div
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className='p-2 rounded-full hover:bg-gray-100 transition-colors'
+              className='p-2 rounded-full hover:bg-background transition-colors'
             >
               <CircleUserRound className='w-5 h-5' />
             </motion.div>

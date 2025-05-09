@@ -62,8 +62,8 @@ const Friends = () => {
             whileTap={{ scale: 0.95 }}
             className={`w-1/2 py-3 text-center transition-colors ${
               !selectedTab
-                ? "text-blue-600 font-medium border-b-2 border-blue-500"
-                : "text-gray-500"
+                ? "text-primary font-medium border-b-2 border-blue-500"
+                : "text-muted-foreground"
             }`}
             onClick={() => setSelectedTab(false)}
           >
@@ -74,8 +74,8 @@ const Friends = () => {
             whileTap={{ scale: 0.95 }}
             className={`w-1/2 py-3 text-center transition-colors ${
               selectedTab
-                ? "text-blue-600 font-medium border-b-2 border-blue-500"
-                : "text-gray-500"
+                ? "text-primary font-medium border-b-2 border-blue-500"
+                : "text-muted-foreground"
             }`}
             onClick={() => setSelectedTab(true)}
           >
@@ -95,7 +95,7 @@ const Friends = () => {
           onChange={handleSearch}
           className='w-full p-3 pl-10 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
         />
-        <Search className='absolute left-3 top-3 h-5 w-5 text-gray-400' />
+        <Search className='absolute left-3 top-3 h-5 w-5 text-muted-foreground' />
       </div>
 
       {/* Friends Content */}

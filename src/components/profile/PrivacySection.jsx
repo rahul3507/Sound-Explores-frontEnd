@@ -18,9 +18,9 @@ export const PrivacySection = ({ item }) => {
           className='p-1 rounded-full hover:bg-gray-100'
         >
           {isOpen ? (
-            <ChevronUp className='w-5 h-5 text-gray-500' />
+            <ChevronUp className='w-5 h-5 text-muted-foreground' />
           ) : (
-            <ChevronDown className='w-5 h-5 text-gray-500' />
+            <ChevronDown className='w-5 h-5 text-muted-foreground' />
           )}
         </motion.div>
       </motion.div>
@@ -34,7 +34,7 @@ export const PrivacySection = ({ item }) => {
             transition={{ duration: 0.3 }}
             className='overflow-hidden'
           >
-            <p className='text-gray-600 text-sm mt-3 mb-1 leading-relaxed'>
+            <p className='text-muted-foreground text-sm mt-3 mb-1 leading-relaxed'>
               {item.desc}
             </p>
           </motion.div>

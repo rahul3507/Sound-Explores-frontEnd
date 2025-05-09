@@ -41,7 +41,7 @@ const YourFriends = ({ friends, setFriends }) => {
             <div className='bg-gray-100 p-4 rounded-full mb-4'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
-                className='h-8 w-8 text-gray-500'
+                className='h-8 w-8 text-muted-foreground'
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke='currentColor'
@@ -54,10 +54,10 @@ const YourFriends = ({ friends, setFriends }) => {
                 />
               </svg>
             </div>
-            <p className='text-gray-500 font-medium'>
+            <p className='text-muted-foreground font-medium'>
               You don't have any friends yet
             </p>
-            <p className='text-gray-400 text-sm mt-1'>
+            <p className='text-muted-foreground text-sm mt-1'>
               Go to Find Friends to connect with others
             </p>
           </motion.div>

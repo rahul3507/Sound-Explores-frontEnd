@@ -44,12 +44,12 @@ const FindFriends = ({ friends, setFriends }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
-              className='flex items-center bg-white rounded-lg p-3 mb-3 shadow-sm'
+              className='flex items-center bg-card rounded-lg p-3 mb-3 shadow-sm'
             >
               <div className='flex-shrink-0 mr-3'>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className='w-12 h-12 rounded-full overflow-hidden ring-2 ring-gray-100'
+                  className='w-10 h-10 rounded-full overflow-hidden ring-2 ring-gray-100'
                 >
                   <img
                     src={friend.image}
@@ -61,7 +61,9 @@ const FindFriends = ({ friends, setFriends }) => {
 
               <div className='flex-1'>
                 <h3 className='text-base font-medium'>{friend.name}</h3>
-                <p className='text-xs text-gray-500'>Suggested for you</p>
+                <p className='text-xs text-muted-foreground'>
+                  Suggested for you
+                </p>
               </div>
 
               <div className='flex gap-2'>
@@ -71,8 +73,8 @@ const FindFriends = ({ friends, setFriends }) => {
                   disabled={pendingFriends.includes(friend.id)}
                   className={`px-3 py-1.5 rounded-md text-sm font-medium ${
                     pendingFriends.includes(friend.id)
-                      ? "bg-gray-200 text-gray-500"
-                      : "bg-blue-500 text-white hover:bg-blue-600"
+                      ? "bg-gray-200 text-muted-foreground"
+                      : "bg-primary text-white hover:bg-blue-600"
                   } transition-colors`}
                   onClick={() => handleAddFriend(friend)}
                 >
@@ -82,7 +84,7 @@ const FindFriends = ({ friends, setFriends }) => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className='px-3 py-1.5 bg-gray-100 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors'
+                  className='px-3 py-1.5 bg-gray-100 rounded-md text-sm font-medium text-foreground hover:bg-gray-200 transition-colors'
                   onClick={() => handleDeleteFriend(friend.id)}
                 >
                   Remove
@@ -99,7 +101,7 @@ const FindFriends = ({ friends, setFriends }) => {
             <div className='bg-gray-100 p-4 rounded-full mb-4'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
-                className='h-8 w-8 text-gray-500'
+                className='h-8 w-8 text-muted-foreground'
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke='currentColor'
@@ -112,10 +114,10 @@ const FindFriends = ({ friends, setFriends }) => {
                 />
               </svg>
             </div>
-            <p className='text-gray-500 font-medium'>
+            <p className='text-muted-foreground font-medium'>
               No friend suggestions available
             </p>
-            <p className='text-gray-400 text-sm mt-1'>
+            <p className='text-muted-foreground text-sm mt-1'>
               Check back later for new suggestions
             </p>
           </motion.div>

@@ -193,7 +193,7 @@ const SoundList = () => {
           onChange={handleSearch}
           className='w-full p-3 pl-10 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
         />
-        <Search className='absolute left-3 top-3 h-5 w-5 text-gray-400' />
+        <Search className='absolute left-3 top-3 h-5 w-5 text-muted-foreground' />
       </div>
 
       {/* Sound List */}
@@ -209,8 +209,10 @@ const SoundList = () => {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
                   className={`flex items-center p-3 rounded-lg ${
-                    sound.selected ? "bg-blue-50 border border-blue-200" : ""
-                  } hover:bg-gray-50 transition-colors`}
+                    sound.selected
+                      ? "border border-blue-200"
+                      : ""
+                  } hover:bg-background border-blue-100 transition-colors`}
                 >
                   <div
                     className='flex items-center cursor-pointer'
@@ -224,7 +226,9 @@ const SoundList = () => {
                     />
                     <div className='mr-3'>
                       <p className='text-sm font-medium'>{sound.name}</p>
-                      <p className='text-xs text-gray-500'>{sound.duration}</p>
+                      <p className='text-xs text-muted-foreground'>
+                        {sound.duration}
+                      </p>
                     </div>
                   </div>
 
@@ -240,7 +244,7 @@ const SoundList = () => {
                     className={`rounded-full w-16 h-8 flex items-center justify-center text-white text-xs font-medium ${
                       sound.isPlaying
                         ? "bg-red-500 hover:bg-red-600"
-                        : "bg-blue-500 hover:bg-blue-600"
+                        : "bg-primary hover:bg-blue-600"
                     } transition-colors shadow-sm`}
                   >
                     {sound.isPlaying ? "Stop" : "Play"}
@@ -254,7 +258,7 @@ const SoundList = () => {
               animate={{ opacity: 1 }}
               className='flex flex-col items-center justify-center h-64'
             >
-              <p className='text-gray-500'>No sounds found</p>
+              <p className='text-muted-foreground'>No sounds found</p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -269,7 +273,7 @@ const SoundList = () => {
         <Button
           onClick={sendToFriend}
           disabled={!sounds.some((sound) => sound.selected)}
-          className='flex items-center justify-center gap-2.5 px-6 py-3 w-full bg-blue-500 rounded-full shadow-md h-auto hover:bg-blue-600 mt-4 mb-4 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium'
+          className='flex items-center justify-center gap-2.5 px-6 py-3 w-full bg-primary rounded-full shadow-md h-auto hover:bg-blue-600 mt-4 mb-4 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium'
         >
           Send to Friend
         </Button>

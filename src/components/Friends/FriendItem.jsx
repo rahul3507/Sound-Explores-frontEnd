@@ -91,43 +91,43 @@ export const FriendItem = ({ friend, onRemove }) => {
   );
 
   return (
-    <div className="relative h-16 overflow-hidden">
-      <div 
+    <div className='relative h-16 overflow-hidden'>
+      <div
         {...swipeHandlers}
-        className="flex items-center justify-between py-3 touch-pan-y"
-        style={{ 
-          transform: isOpen ? 'translateX(-10px)' : 'translateX(0)',
-          transition: 'transform 0.3s ease-out'
+        className='flex items-center justify-between py-3 touch-pan-y'
+        style={{
+          transform: isOpen ? "translateX(-10px)" : "translateX(0)",
+          transition: "transform 0.3s ease-out",
         }}
       >
-        <div className="flex items-center">
+        <div className='flex items-center'>
           <img
-            src={friend.image || '/api/placeholder/48/48'}
+            src={friend.image || "/api/placeholder/48/48"}
             alt={friend.name}
-            className="w-12 h-12 rounded-full object-cover"
+            className='w-10 h-10 rounded-full overflow-hidden ring-2 ring-gray-100'
           />
-          <span className="ml-3 font-medium">{friend.name}</span>
+          <span className='ml-3 font-medium'>{friend.name}</span>
         </div>
 
-        <Link 
+        <Link
           to='/chat-interface'
-          className="flex items-right justify-center cursor-pointer"
-          style={{ width: '80px' }}
+          className='flex items-right justify-center cursor-pointer'
+          style={{ width: "80px" }}
         >
           <Mail size={20} />
         </Link>
       </div>
-      
-      <div 
+
+      <div
         {...swipeHandlers}
-        className="flex items-center justify-between py-3 touch-pan-y"
-        style={{ 
-          transform: isOpen ? 'translateX(260px)' : 'translateX(1000px)',
-          transition: 'transform 0.3s ease-in'
+        className='flex items-center justify-between py-3 touch-pan-y'
+        style={{
+          transform: isOpen ? "translateX(260px)" : "translateX(1000px)",
+          transition: "transform 0.3s ease-in",
         }}
       >
-        <button 
-          className="bg-red-500 absolute top-[-55px] text-white h-10 w-20 mx-1 rounded"
+        <button
+          className='bg-red-500 absolute top-[-55px] text-white h-10 w-20 mx-1 rounded'
           onClick={() => {
             onRemove(friend.id);
             setIsOpen(false);

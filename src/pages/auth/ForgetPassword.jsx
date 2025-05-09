@@ -48,8 +48,8 @@ const ForgetPassword = () => {
   };
 
   return (
-    <div className='bg-gray-50 flex flex-row justify-center w-full min-h-screen'>
-      <div className='bg-white w-full max-w-md relative shadow-md'>
+    <div className='bg-background flex flex-row justify-center w-full min-h-screen'>
+      <div className='bg-card w-full max-w-md relative shadow-md'>
         <StatusBar />
 
         {/* Header */}
@@ -57,7 +57,7 @@ const ForgetPassword = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className='flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10'
+          className='flex items-center justify-between p-4 border-b bg-card sticky top-0 z-10'
         >
           <div className='flex items-center'>
             <Link to='/'>
@@ -102,7 +102,7 @@ const ForgetPassword = () => {
           >
             <div>
               <h2 className='text-2xl font-bold mb-2'>Forgot Password?</h2>
-              <p className='text-gray-600 text-sm'>
+              <p className='text-muted-foreground text-sm'>
                 Enter your email address and we'll send you a code to reset your
                 password.
               </p>
@@ -110,12 +110,14 @@ const ForgetPassword = () => {
 
             {/* Email Field */}
             <div className='space-y-2'>
-              <label className='text-sm font-medium text-gray-700'>Email</label>
+              <label className='text-sm font-medium text-foreground'>
+                Email
+              </label>
               <Card className='shadow-none border border-gray-200'>
                 <CardContent className='p-0'>
                   <Input
                     {...register("email")}
-                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                    className={`border-none px-4 py-3 h-auto text-foreground text-sm ${
                       errors.email
                         ? "focus:ring-red-500"
                         : "focus:ring-blue-500"
@@ -128,7 +130,7 @@ const ForgetPassword = () => {
                 <motion.span
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className='text-red-500 text-xs block'
+                  className='text-destructive text-xs block'
                 >
                   {errors.email.message}
                 </motion.span>
@@ -144,7 +146,7 @@ const ForgetPassword = () => {
               <Button
                 type='submit'
                 disabled={loading}
-                className='w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-full font-medium transition-colors'
+                className='w-full py-3 bg-primary hover:bg-blue-600 text-white rounded-full font-medium transition-colors'
               >
                 {loading ? "Sending..." : "Send Code"}
               </Button>
@@ -161,7 +163,7 @@ const ForgetPassword = () => {
         >
           <Link
             to='/'
-            className='text-sm text-blue-600 hover:text-blue-800 font-medium'
+            className='text-sm text-primary hover:text-blue-800 font-medium'
           >
             Back to Login
           </Link>

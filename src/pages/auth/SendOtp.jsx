@@ -95,8 +95,8 @@ const SendOtp = () => {
   };
 
   return (
-    <div className='bg-gray-50 flex flex-row justify-center w-full min-h-screen'>
-      <div className='bg-white w-full max-w-md relative shadow-md'>
+    <div className='bg-background flex flex-row justify-center w-full min-h-screen'>
+      <div className='bg-card w-full max-w-md relative shadow-md'>
         <StatusBar />
 
         {/* Header */}
@@ -104,7 +104,7 @@ const SendOtp = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className={`flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10 transition-shadow ${
+          className={`flex items-center justify-between p-4 border-b bg-card sticky top-0 z-10 transition-shadow ${
             scrolled ? "shadow-md" : ""
           }`}
         >
@@ -138,7 +138,7 @@ const SendOtp = () => {
             src='/logo.png'
           />
           <h2 className='text-2xl font-bold mb-1'>Verification Code</h2>
-          <p className='text-xs text-gray-500'>
+          <p className='text-xs text-muted-foreground'>
             We sent a code to {email}
           </p>
         </motion.div>
@@ -153,7 +153,7 @@ const SendOtp = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className='w-14 h-14 border border-gray-200 rounded-lg flex items-center justify-center bg-white shadow-sm'
+                  className='w-14 h-14 border border-gray-200 rounded-lg flex items-center justify-center bg-card shadow-sm'
                 >
                   <input
                     ref={inputRefs[index]}
@@ -177,7 +177,7 @@ const SendOtp = () => {
                 disabled={isTimerActive}
                 className={`text-sm font-medium ${
                   isTimerActive
-                    ? "text-gray-400"
+                    ? "text-muted-foreground"
                     : "text-blue-500 cursor-pointer"
                 }`}
               >
@@ -189,7 +189,7 @@ const SendOtp = () => {
             <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
               <Button
                 type='submit'
-                className='w-full py-3 bg-blue-500 rounded-full text-white font-medium hover:bg-blue-600 transition-colors'
+                className='w-full py-3 bg-primary rounded-full text-white font-medium hover:bg-blue-600 transition-colors'
                 disabled={otp.join("").length !== 4}
               >
                 Verify Code

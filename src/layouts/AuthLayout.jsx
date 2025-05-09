@@ -22,7 +22,7 @@ const AuthLayout = () => {
       className='min-h-screen bg-background flex flex-col justify-center items-center'
     >
       <main className='w-full max-w-md'>
-        <div className='bg-background w-full h-full max-h-screen'>
+        <div className='bg-background w-full h-full text-foreground min-h-screen'>
           <Outlet />
         </div>
       </main>

@@ -60,8 +60,8 @@ const SignUp = () => {
   };
 
   return (
-    <div className='bg-gray-50 flex flex-row justify-center w-full min-h-screen'>
-      <div className='bg-white w-full max-w-md relative shadow-md'>
+    <div className='bg-background flex flex-row justify-center w-full min-h-screen'>
+      <div className='bg-card w-full max-w-md relative shadow-md'>
         <StatusBar />
 
         {/* Header */}
@@ -69,7 +69,7 @@ const SignUp = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className={`flex items-center justify-between p-4 border-b bg-white sticky top-0 z-10 transition-shadow ${
+          className={`flex items-center justify-between p-4 border-b bg-card sticky top-0 z-10 transition-shadow ${
             scrolled ? "shadow-md" : ""
           }`}
         >
@@ -103,7 +103,7 @@ const SignUp = () => {
             src='/logo.png'
           />
           <h2 className='text-2xl font-bold mb-1'>Create Account</h2>
-          <p className='text-xs text-gray-500'>
+          <p className='text-xs text-muted-foreground'>
             Fill in your details to register
           </p>
         </motion.div>
@@ -118,7 +118,7 @@ const SignUp = () => {
                 <CardContent className='p-0'>
                   <Input
                     {...register("name")}
-                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                    className={`border-none px-4 py-3 h-auto text-foreground text-sm ${
                       errors.name ? "border-red-500" : ""
                     }`}
                     placeholder='Enter your name...'
@@ -126,7 +126,7 @@ const SignUp = () => {
                 </CardContent>
               </Card>
               {errors.name && (
-                <span className='text-red-500 text-sm'>
+                <span className='text-destructive text-sm'>
                   {errors.name.message}
                 </span>
               )}
@@ -140,7 +140,7 @@ const SignUp = () => {
                   <Input
                     {...register("phone")}
                     type='tel'
-                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                    className={`border-none px-4 py-3 h-auto text-foreground text-sm ${
                       errors.phone ? "border-red-500" : ""
                     }`}
                     placeholder='Enter your Phone number...'
@@ -148,7 +148,7 @@ const SignUp = () => {
                 </CardContent>
               </Card>
               {errors.phone && (
-                <span className='text-red-500 text-sm'>
+                <span className='text-destructive text-sm'>
                   {errors.phone.message}
                 </span>
               )}
@@ -161,7 +161,7 @@ const SignUp = () => {
                 <CardContent className='p-0 flex items-center'>
                   <Input
                     {...register("password")}
-                    className={`border-none px-4 py-3 h-auto text-gray-700 text-sm ${
+                    className={`border-none px-4 py-3 h-auto text-foreground text-sm ${
                       errors.password ? "border-red-500" : ""
                     }`}
                     placeholder='Enter your Password...'
@@ -172,15 +172,15 @@ const SignUp = () => {
                     onClick={togglePasswordVisibility}
                   >
                     {showPassword ? (
-                      <EyeOffIcon className='w-5 h-5 text-gray-500' />
+                      <EyeOffIcon className='w-5 h-5 text-muted-foreground' />
                     ) : (
-                      <EyeIcon className='w-5 h-5 text-gray-500' />
+                      <EyeIcon className='w-5 h-5 text-muted-foreground' />
                     )}
                   </div>
                 </CardContent>
               </Card>
               {errors.password && (
-                <span className='text-red-500 text-sm'>
+                <span className='text-destructive text-sm'>
                   {errors.password.message}
                 </span>
               )}
@@ -204,14 +204,14 @@ const SignUp = () => {
               />
               <label
                 htmlFor='terms'
-                className='cursor-pointer text-sm text-gray-700'
+                className='cursor-pointer text-sm text-foreground'
               >
                 I agree to the processing of personal data and accept the Terms
                 of Service & Privacy Policy
               </label>
             </div>
             {errors.agreeToTerms && (
-              <span className='text-red-500 text-sm block mt-1'>
+              <span className='text-destructive text-sm block mt-1'>
                 {errors.agreeToTerms.message}
               </span>
             )}
@@ -220,7 +220,7 @@ const SignUp = () => {
             <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
               <Button
                 type='submit'
-                className='w-full py-3 bg-blue-500 rounded-full text-white font-medium hover:bg-blue-600 transition-colors'
+                className='w-full py-3 bg-primary rounded-full text-white font-medium hover:bg-blue-600 transition-colors'
               >
                 Sign Up
               </Button>
@@ -228,7 +228,9 @@ const SignUp = () => {
 
             {/* Already have an account */}
             <div className='flex items-center justify-center gap-1 mt-2'>
-              <p className='text-gray-700 text-sm'>Already have an account?</p>
+              <p className='text-foreground text-sm'>
+                Already have an account?
+              </p>
               <Link to='/' className='font-medium text-blue-500 text-sm'>
                 Sign In
               </Link>
