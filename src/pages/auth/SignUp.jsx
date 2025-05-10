@@ -95,9 +95,9 @@ const SignUp = () => {
           <div className='flex items-center'>
             <Link to='/'>
               <motion.div
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.0 }}
                 whileTap={{ scale: 0.9 }}
-                className='p-2 rounded-full hover:bg-gray-100 transition-colors'
+                className='p-2 rounded-full hover:bg-background hover:rounded-full border-gray-400 transition-colors'
               >
                 <ArrowLeft className='w-5 h-5' />
               </motion.div>

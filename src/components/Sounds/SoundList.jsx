@@ -49,20 +49,101 @@ const SoundList = () => {
       selected: false,
       isPlaying: false,
     },
+    {
+      id: 7,
+      name: "Soft Piano",
+      duration: "01:20",
+      selected: false,
+      isPlaying: false,
+    },
+    {
+      id: 8,
+      name: "Soft Piano",
+      duration: "01:20",
+      selected: false,
+      isPlaying: false,
+    },
+    {
+      id: 9,
+      name: "Soft Piano",
+      duration: "01:20",
+      selected: false,
+      isPlaying: false,
+    },
+    {
+      id: 10,
+      name: "Soft Piano",
+      duration: "01:20",
+      selected: false,
+      isPlaying: false,
+    },
+    {
+      id: 11,
+      name: "Soft Piano",
+      duration: "01:20",
+      selected: false,
+      isPlaying: false,
+    },
+    {
+      id: 12,
+      name: "Soft Piano",
+      duration: "01:20",
+      selected: false,
+      isPlaying: false,
+    },
+    {
+      id: 13,
+      name: "Soft Piano",
+      duration: "01:20",
+      selected: false,
+      isPlaying: false,
+    },
+    {
+      id: 14,
+      name: "Soft Piano",
+      duration: "01:20",
+      selected: false,
+      isPlaying: false,
+    },
+    {
+      id: 15,
+      name: "Soft Piano",
+      duration: "01:20",
+      selected: false,
+      isPlaying: false,
+    },
+    {
+      id: 16,
+      name: "Soft Piano",
+      duration: "01:20",
+      selected: false,
+      isPlaying: false,
+    },
   ]);
 
   const [filteredSounds, setFilteredSounds] = useState(sounds);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Toggle sound selection (radio button behavior)
+  // Toggle sound selection with ability to unselect
   const toggleSelect = (id) => {
-    const updatedSounds = sounds.map((sound) =>
-      sound.id === id
-        ? { ...sound, selected: true }
-        : { ...sound, selected: false }
-    );
-    setSounds(updatedSounds);
-    applySearch(searchTerm, updatedSounds);
+    const soundToUpdate = sounds.find((sound) => sound.id === id);
+
+    // If sound is already selected, unselect it, otherwise select it and unselect others
+    if (soundToUpdate && soundToUpdate.selected) {
+      const updatedSounds = sounds.map((sound) =>
+        sound.id === id ? { ...sound, selected: false } : sound
+      );
+      setSounds(updatedSounds);
+      applySearch(searchTerm, updatedSounds);
+    } else {
+      const updatedSounds = sounds.map((sound) =>
+        sound.id === id
+          ? { ...sound, selected: true }
+          : { ...sound, selected: false }
+      );
+      setSounds(updatedSounds);
+      applySearch(searchTerm, updatedSounds);
+    }
   };
 
   // Play/pause sound function (only one at a time)
@@ -156,7 +237,7 @@ const SoundList = () => {
     }, [isPlaying, animationSpeed]);
 
     return (
-      <svg viewBox={`0 0 ${waveLines.length * 2} 24`} className='w-full h-8'>
+      <svg viewBox={`0 0 ${waveLines.length * 2} 24`} className="w-full h-8">
         {waveLines.map((height, index) => {
           const startY = 12 - height / 2;
           const endY = 12 + height / 2;
@@ -169,8 +250,8 @@ const SoundList = () => {
               x2={index * 2}
               y2={endY}
               stroke={isPlaying ? "#00ae34" : "#D1D5DB"}
-              strokeWidth='0.5'
-              strokeLinecap='round'
+              strokeWidth="0.5"
+              strokeLinecap="round"
             />
           );
         })}
@@ -182,25 +263,27 @@ const SoundList = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className='flex flex-col h-full'
+      className="flex flex-col h-[calc(100vh-125px)] justify-between"
     >
       {/* Search Bar */}
-      <div className='relative mb-4 text-black'>
-        <input
-          type='text'
-          placeholder='Search sounds'
-          value={searchTerm}
-          onChange={handleSearch}
-          className='w-full p-3 pl-10 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-        />
-        <Search className='absolute left-3 top-3 h-5 w-5 text-muted-foreground' />
+      <div className="sticky top-0 z-10 bg-background pb-2">
+        <div className="relative text-black">
+          <input
+            type="text"
+            placeholder="Search sounds"
+            value={searchTerm}
+            onChange={handleSearch}
+            className="w-full p-3 pl-10 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+        </div>
       </div>
 
-      {/* Sound List */}
-      <div className='flex-1 overflow-auto'>
+      {/* Sound List - Only this section scrolls */}
+      <div className="overflow-y-auto scroll-container flex-1 my-2">
         <AnimatePresence>
           {filteredSounds.length > 0 ? (
-            <motion.div className='space-y-2'>
+            <motion.div className="space-y-2">
               {filteredSounds.map((sound) => (
                 <motion.div
                   key={sound.id}
@@ -215,24 +298,24 @@ const SoundList = () => {
                   } hover:bg-gray-50 hover:text-black transition-colors`}
                 >
                   <div
-                    className='flex items-center cursor-pointer'
+                    className="flex items-center cursor-pointer"
                     onClick={() => toggleSelect(sound.id)}
                   >
                     <Checkbox
                       id={`sound-${sound.id}`}
                       checked={sound.selected}
                       onCheckedChange={() => toggleSelect(sound.id)}
-                      className='w-5 h-5 border-2 border-gray-300 rounded mr-3'
+                      className="w-5 h-5 border-2 border-gray-300 rounded mr-3"
                     />
-                    <div className='mr-3'>
-                      <p className='text-sm font-medium'>{sound.name}</p>
-                      <p className='text-xs text-muted-foreground'>
+                    <div className="mr-3">
+                      <p className="text-sm font-medium">{sound.name}</p>
+                      <p className="text-xs text-muted-foreground">
                         {sound.duration}
                       </p>
                     </div>
                   </div>
 
-                  <div className='flex-1 mx-2'>
+                  <div className="flex-1 mx-2">
                     {/* Dynamic waveform */}
                     <AudioWave isPlaying={sound.isPlaying} />
                   </div>
@@ -256,28 +339,30 @@ const SoundList = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className='flex flex-col items-center justify-center h-64'
+              className="flex flex-col items-center justify-center h-64"
             >
-              <p className='text-muted-foreground'>No sounds found</p>
+              <p className="text-muted-foreground">No sounds found</p>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Bottom Action Button */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        <Button
-          onClick={sendToFriend}
-          disabled={!sounds.some((sound) => sound.selected)}
-          className='flex items-center justify-center gap-2.5 px-6 py-3 w-full bg-primary rounded-full shadow-md h-auto hover:bg-blue-600 mt-4 mb-4 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium'
+      {/* Bottom Action Button - Static, doesn't scroll */}
+      <div className="sticky bottom-5">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
         >
-          Send to Friend
-        </Button>
-      </motion.div>
+          <Button
+            onClick={sendToFriend}
+            disabled={!sounds.some((sound) => sound.selected)}
+            className="flex items-center justify-center gap-2.5 px-6 py-3 w-full bg-primary rounded-full h-auto hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium"
+          >
+            Send to Friend
+          </Button>
+        </motion.div>
+      </div>
     </motion.div>
   );
 };

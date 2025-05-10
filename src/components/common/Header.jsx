@@ -56,29 +56,32 @@ const Header = ({ backHref, title, onLogoutClick }) => {
         scrolled ? "shadow-md" : ""
       }`}
     >
-      <div className='flex items-center'>
+      <div className="flex items-center">
         <Link to={backHref}>
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className='p-2 rounded-full hover:bg-background transition-colors'
+            className="p-2 rounded-full hover:bg-background transition-colors"
           >
-            <ChevronLeft className='w-5 h-5' />
+            <ChevronLeft className="w-5 h-5" />
           </motion.div>
         </Link>
-        <h1 className='text-xl font-bold'>{title}</h1>
       </div>
-      <div className='relative' ref={menuRef}>
+      <div>
+        {" "}
+        <h1 className="text-xl font-bold">{title}</h1>
+      </div>
+      <div className="relative" ref={menuRef}>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className='p-2 rounded-full hover:bg-background transition-colors'
+          className="p-2 rounded-full hover:bg-background transition-colors"
           onClick={toggleOptions}
         >
           {showOptions ? (
-            <X className='w-5 h-5' />
+            <X className="w-5 h-5" />
           ) : (
-            <MoreVertical className='w-5 h-5' />
+            <MoreVertical className="w-5 h-5" />
           )}
         </motion.button>
 
@@ -90,43 +93,43 @@ const Header = ({ backHref, title, onLogoutClick }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className='absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-lg border border-gray-100 z-20 overflow-hidden'
+              className="absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-lg border border-gray-100 z-20 overflow-hidden"
             >
-              <div className='py-1'>
+              <div className="py-1">
                 <Link
-                  to='/sound-library'
-                  className='flex items-center px-4 py-3 hover:bg-background'
+                  to="/sound-library"
+                  className="flex items-center px-4 py-3 hover:bg-background"
                   onClick={() => setShowOptions(false)}
                 >
-                  <Music2Icon className='w-4 h-4 mr-3 text-muted-foreground' />
-                  <span className='text-sm font-medium'>Sound Library</span>
+                  <Music2Icon className="w-4 h-4 mr-3 text-muted-foreground" />
+                  <span className="text-sm font-medium">Sound Library</span>
                 </Link>
                 <Link
-                  to='/friends'
-                  className='flex items-center px-4 py-3 hover:bg-background'
+                  to="/all-friends"
+                  className="flex items-center px-4 py-3 hover:bg-background"
                   onClick={() => setShowOptions(false)}
                 >
-                  <UsersRound className='w-4 h-4 mr-3 text-muted-foreground' />
-                  <span className='text-sm font-medium'>Friends</span>
+                  <UsersRound className="w-4 h-4 mr-3 text-muted-foreground" />
+                  <span className="text-sm font-medium">Friends</span>
                 </Link>
                 <Link
-                  to='/privacy-policy'
-                  className='flex items-center px-4 py-3 hover:bg-background'
+                  to="/privacy-policy"
+                  className="flex items-center px-4 py-3 hover:bg-background"
                   onClick={() => setShowOptions(false)}
                 >
-                  <HelpCircle className='w-4 h-4 mr-3 text-muted-foreground' />
-                  <span className='text-sm font-medium'>Privacy Policy</span>
+                  <HelpCircle className="w-4 h-4 mr-3 text-muted-foreground" />
+                  <span className="text-sm font-medium">Privacy Policy</span>
                 </Link>
                 <motion.div
                   whileHover={{ backgroundColor: "#fef2f2" }}
-                  className='flex items-center px-4 py-3 hover:bg-background text-destructive cursor-pointer'
+                  className="flex items-center px-4 py-3 hover:bg-background text-destructive cursor-pointer"
                   onClick={() => {
                     setShowOptions(false);
                     onLogoutClick();
                   }}
                 >
-                  <LogOut className='w-4 h-4 mr-3' />
-                  <span className='text-sm font-medium'>Logout</span>
+                  <LogOut className="w-4 h-4 mr-3" />
+                  <span className="text-sm font-medium">Logout</span>
                 </motion.div>
               </div>
             </motion.div>

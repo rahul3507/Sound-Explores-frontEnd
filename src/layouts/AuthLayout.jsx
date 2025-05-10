@@ -19,10 +19,10 @@ const AuthLayout = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className='min-h-screen bg-background flex flex-col justify-center items-center'
+      className="max-h-screen bg-background"
     >
-      <main className='w-full max-w-md'>
-        <div className='bg-background w-full h-full text-foreground min-h-screen'>
+      <main className="md:container mx-auto flex justify-center">
+        <div className="w-full md:max-w-md">
           <Outlet />
         </div>
       </main>

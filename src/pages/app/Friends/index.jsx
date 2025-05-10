@@ -7,13 +7,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import SideBar from "../../../components/common/SideBar";
 import SoundList from "../../../components/Sounds/SoundList";
 import { StatusBar } from "../../../components/common/StatusBar";
-import Friends from "../Friends/Friends";
+import Friends from "./Friends";
 
-const SoundLibrary = () => {
+const FriendList = () => {
   // State for sidebar visibility and active section
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isSoundSelected, setIsSoundSelected] = useState(true);
-  const [title, setTitle] = useState("Sound Library");
+  const [isSoundSelected, setIsSoundSelected] = useState(false);
+  const [title, setTitle] = useState("Friends");
   const [scrolled, setScrolled] = useState(false);
 
   // Refs for detecting clicks outside sidebar
@@ -61,7 +61,7 @@ const SoundLibrary = () => {
   }, [sidebarOpen]);
 
   return (
-    <div className="bg-background flex flex-row justify-center w-full h-screen overflow-hidden">
+    <div className="bg-background flex flex-row justify-center w-full min-h-screen ">
       <div
         className="bg-card w-full max-w-md relative shadow-md"
         ref={mainContentRef}
@@ -151,4 +151,4 @@ const SoundLibrary = () => {
   );
 };
 
-export default SoundLibrary;
+export default FriendList;

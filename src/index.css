@@ -64,6 +64,41 @@
   animation: slide-in-bottom 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
+.scroll-container {
+  /* Always reserve space for the scrollbar to prevent layout shifts */
+  scrollbar-gutter: stable;
+
+  /* Optional: Style the scrollbar for a more modern look */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+}
+
+/* For Firefox */
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+/* CSS for better transitions with lists */
+.friends-list-container {
+  min-height: 300px;
+}
+
 @keyframes slide-in-bottom {
   0% {
     transform: translateY(20px);

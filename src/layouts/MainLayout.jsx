@@ -20,7 +20,7 @@ const MainLayout = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className='min-h-screen bg-background'
+      className='max-h-screen bg-background'
     >
       <main className='md:container mx-auto flex justify-center'>
         <div className='w-full md:max-w-md'>
