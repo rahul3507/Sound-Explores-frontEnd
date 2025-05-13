@@ -22,7 +22,7 @@ const loginSchema = z.object({
 });
 
 const SignIn = () => {
-  const { signIn } = useAuth();
+  const { signIn, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -201,8 +201,9 @@ const SignIn = () => {
               <Button
                 type='submit'
                 className='w-full py-3 bg-primary rounded-full text-white font-medium hover:bg-blue-600 transition-colors'
+                disabled={loading}
               >
-                Sign In
+                {loading ? "Signing in..." : "Sign In"}
               </Button>
             </motion.div>
 
