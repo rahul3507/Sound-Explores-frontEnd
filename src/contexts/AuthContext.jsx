@@ -75,6 +75,7 @@ export function AuthProvider({ children }) {
       // Store user data in state
       setUser(response.data.data.userData);
 
+      // setCookie("isAuthenticated", "true", { maxAge: 86400 * 30 }); // 30 days
       toast.success("Successfully signed in!");
       navigate(ROUTES.SOUND_LIBRARY);
       return true;
@@ -121,7 +122,8 @@ export function AuthProvider({ children }) {
       // Call logout API endpoint if available
       // await apiClient.post('/auth/logout');
 
-      // Remove authentication cookies
+      // Remove authentication cookies.
+      removeCookie("refreshToken", { path: "/" });
       removeAuthTokens();
 
       // Clear user data

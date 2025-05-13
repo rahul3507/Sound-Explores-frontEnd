@@ -65,7 +65,8 @@ export const removeCookie = (name, options = {}) => {
  * Check if a cookie exists
  */
 export const hasCookie = (name) => {
-  return getCookie(name) !== null;
+  const value = getCookie(name);
+  return value !== null && value !== "";
 };
 
 /**
@@ -107,3 +108,4 @@ export const removeAuthTokens = () => {
   removeCookie("refreshToken");
   removeCookie("isAuthenticated");
 };
+    
